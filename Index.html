@@ -1,1 +1,3202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Ink Haven | Wear Your Healing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
+    <style>
+        :root {
+            --primary: #F5E6E0;
+            --primary-dark: #E8D5CD;
+            --secondary: #D4A5A5;
+            --accent: #C9B1B1;
+            --text: #4A4A4A;
+            --text-light: #7A7A7A;
+            --white: #FFFFFF;
+            --cream: #FDF8F5;
+            --blush: #F8E8E8;
+            --sage: #E8F0E8;
+            --lavender: #F0E8F5;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --shadow-hover: rgba(0, 0, 0, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            background-color: var(--cream);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 500;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(253, 248, 245, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 400;
+            font-size: 0.95rem;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .cart-btn {
+            position: relative;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text);
+            transition: color 0.3s ease;
+        }
+
+        .cart-btn:hover {
+            color: var(--secondary);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--secondary);
+            color: white;
+            font-size: 0.7rem;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--blush) 100%);
+            overflow: hidden;
+            padding-top: 80px;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('images/hero-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.4;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(253, 248, 245, 0.3) 0%, rgba(253, 248, 245, 0.8) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            padding: 2rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            margin-bottom: 1.5rem;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            font-style: italic;
+            color: var(--secondary);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            color: white;
+            box-shadow: 0 4px 20px rgba(212, 165, 165, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(212, 165, 165, 0.5);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--text);
+            border: 2px solid var(--primary-dark);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            border-color: var(--secondary);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 6rem 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .section-header p {
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Shop Section */
+        .shop {
+            background: var(--white);
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--primary-dark);
+            background: white;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--secondary);
+            border-color: var(--secondary);
+            color: white;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px var(--shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px var(--shadow-hover);
+        }
+
+        .product-image {
+            position: relative;
+            aspect-ratio: 3/4;
+            overflow: hidden;
+            background: var(--cream);
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--secondary);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-category {
+            font-size: 0.8rem;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .product-price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        /* Product Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px var(--shadow);
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--primary);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .product-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .main-image {
+            aspect-ratio: 3/4;
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--cream);
+        }
+
+        .main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumbnail-list {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .thumbnail {
+            width: 70px;
+            height: 90px;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            background: var(--cream);
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumbnail:hover,
+        .thumbnail.active {
+            border-color: var(--secondary);
+        }
+
+        .product-details h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-details .price {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-details .description {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .option-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .option-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+            color: var(--text);
+        }
+
+        .size-options,
+        .color-options {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .size-btn {
+            width: 50px;
+            height: 50px;
+            border: 2px solid var(--primary-dark);
+            background: white;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .size-btn:hover,
+        .size-btn.active {
+            border-color: var(--secondary);
+            background: var(--secondary);
+            color: white;
+        }
+
+        .color-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--primary-dark);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .color-btn:hover,
+        .color-btn.active {
+            box-shadow: 0 0 0 3px var(--secondary);
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 1.2rem;
+            margin-top: 1rem;
+        }
+
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 450px;
+            max-width: 100%;
+            height: 100vh;
+            background: white;
+            z-index: 2000;
+            box-shadow: -5px 0 30px var(--shadow);
+            transition: right 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-sidebar.active {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-header h3 {
+            font-size: 1.3rem;
+        }
+
+        .cart-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .cart-close:hover {
+            transform: rotate(90deg);
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem 2rem;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--primary);
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 100px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--cream);
+            flex-shrink: 0;
+        }
+
+        .cart-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .cart-item-variant {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-item-price {
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.75rem;
+        }
+
+        .quantity-btn {
+            width: 28px;
+            height: 28px;
+            border: 1px solid var(--primary-dark);
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            background: var(--primary);
+        }
+
+        .cart-item-quantity {
+            font-weight: 500;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .remove-item {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-left: auto;
+            transition: color 0.3s ease;
+        }
+
+        .remove-item:hover {
+            color: #e74c3c;
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-light);
+        }
+
+        .cart-empty svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1.5rem;
+            opacity: 0.5;
+        }
+
+        .cart-footer {
+            padding: 1.5rem 2rem;
+            border-top: 1px solid var(--primary);
+            background: var(--cream);
+        }
+
+        .cart-summary {
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .summary-row.total {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text);
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--primary-dark);
+        }
+
+        .checkout-btn {
+            width: 100%;
+        }
+
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .cart-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Checkout Modal */
+        .checkout-modal .modal-content {
+            max-width: 600px;
+        }
+
+        .checkout-form {
+            padding: 2rem;
+        }
+
+        .checkout-form h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--primary-dark);
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-note {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .form-note a {
+            color: var(--secondary);
+            text-decoration: none;
+        }
+
+        /* About Section */
+        .about {
+            background: linear-gradient(135deg, var(--blush) 0%, var(--cream) 100%);
+        }
+
+        .about-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 2;
+            color: var(--text);
+            margin-bottom: 2rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .about-quote {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--secondary);
+            margin: 3rem 0;
+            padding: 2rem;
+            border-left: 4px solid var(--secondary);
+            background: white;
+            border-radius: 0 16px 16px 0;
+            text-align: left;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .value-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .value-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .value-card h4 {
+            margin-bottom: 0.5rem;
+        }
+
+        .value-card p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* Contact Section */
+        .contact {
+            background: var(--white);
+        }
+
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-card {
+            background: linear-gradient(135deg, var(--cream), var(--blush));
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+
+        .contact-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+        }
+
+        .contact-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-card p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-email {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-email:hover {
+            color: var(--accent);
+        }
+
+        .contact-note {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--primary-dark);
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-tagline {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-copy {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        /* Success Message */
+        .success-message {
+            position: fixed;
+            top: 100px;
+            right: -400px;
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px var(--shadow-hover);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: right 0.4s ease;
+            max-width: 350px;
+        }
+
+        .success-message.active {
+            right: 2rem;
+        }
+
+        .success-icon {
+            width: 50px;
+            height: 50px;
+            background: #27ae60;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .success-text h4 {
+            margin-bottom: 0.25rem;
+        }
+
+        .success-text p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Admin Dashboard Styles */
+        .admin-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--secondary);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 999;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .admin-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .admin-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--cream);
+            z-index: 5000;
+            overflow-y: auto;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .admin-header {
+            background: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .admin-header h2 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+        }
+
+        .admin-close {
+            background: var(--primary);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+
+        .admin-close:hover {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .admin-content {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .admin-tab {
+            padding: 0.875rem 1.5rem;
+            border: 2px solid var(--primary-dark);
+            background: white;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+
+        .admin-tab:hover,
+        .admin-tab.active {
+            background: var(--secondary);
+            border-color: var(--secondary);
+            color: white;
+        }
+
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        .admin-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .admin-card h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--primary-dark);
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .image-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .image-input-row {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .image-input-row input {
+            flex: 1;
+        }
+
+        .image-input-row button {
+            padding: 0.5rem 1rem;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .add-image-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--sage);
+            color: var(--text);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: fit-content;
+        }
+
+        .size-color-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .tag-input {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border: 2px solid var(--primary-dark);
+            border-radius: 12px;
+            min-height: 50px;
+        }
+
+        .tag {
+            background: var(--secondary);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tag button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        .tag-input input {
+            border: none;
+            outline: none;
+            flex: 1;
+            min-width: 80px;
+            background: transparent;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .admin-btn-primary {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .admin-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(212, 165, 165, 0.4);
+        }
+
+        .admin-btn-secondary {
+            padding: 1rem 2rem;
+            background: white;
+            color: var(--text);
+            border: 2px solid var(--primary-dark);
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .admin-btn-secondary:hover {
+            background: var(--primary);
+        }
+
+        /* Product List Table */
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .product-table th,
+        .product-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--primary-dark);
+        }
+
+        .product-table th {
+            font-weight: 600;
+            color: var(--text);
+            background: var(--cream);
+        }
+
+        .product-table tr:hover {
+            background: var(--cream);
+        }
+
+        .product-table img {
+            width: 60px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .table-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .table-btn.edit {
+            background: var(--sage);
+            color: var(--text);
+        }
+
+        .table-btn.delete {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .table-btn:hover {
+            opacity: 0.8;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-light);
+        }
+
+        .help-box {
+            background: linear-gradient(135deg, var(--blush), var(--cream));
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .help-box h4 {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .help-box ul {
+            margin-left: 1.5rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .help-box li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 5px 20px var(--shadow);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .modal-body {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+
+            .filter-buttons {
+                gap: 0.5rem;
+            }
+
+            .filter-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 4rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <div class="logo-icon">G</div>
+            Glass Ink Haven
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#shop">Shop</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <button class="cart-btn" id="cartBtn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 6h15l-1.5 9h-12z"></path>
+                <circle cx="9" cy="20" r="1"></circle>
+                <circle cx="18" cy="20" r="1"></circle>
+                <path d="M6 6L5 3H2"></path>
+            </svg>
+            <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12h18M3 6h18M3 18h18"></path>
+            </svg>
+        </button>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Wear Your <span>Healing</span></h1>
+            <p>Expressive fashion for the soul. Every piece tells a story of growth, resilience, and the beautiful journey of turning pain into something extraordinary.</p>
+            <a href="#shop" class="btn btn-primary">
+                Explore Collection
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"></path>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Shop Section -->
+    <section class="shop" id="shop">
+        <div class="section-header fade-in">
+            <h2>Our Collection</h2>
+            <p>Discover pieces that speak to your journey. Each design is crafted to inspire healing and self-expression.</p>
+        </div>
+        
+        <div class="filter-buttons fade-in">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="hoodies">Hoodies</button>
+            <button class="filter-btn" data-filter="tees">Tees</button>
+            <button class="filter-btn" data-filter="tanks">Tank Tops</button>
+            <button class="filter-btn" data-filter="pants">Pants</button>
+            <button class="filter-btn" data-filter="dresses">Dresses</button>
+            <button class="filter-btn" data-filter="totes">Tote Bags</button>
+        </div>
+
+        <div class="products-grid" id="productsGrid">
+            <!-- Products will be dynamically inserted here -->
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="section-header fade-in">
+            <h2>Our Story</h2>
+            <p>The heart behind Glass Ink Haven</p>
+        </div>
+        
+        <div class="about-content fade-in">
+            <div class="about-text">
+                <p>Glass Ink Haven was born from a simple yet profound belief: that healing is not linear, and our stories—especially the difficult ones—deserve to be honored, not hidden. In a world that often asks us to bury our pain and paste on a smile, we choose a different path.</p>
+                
+                <p>We believe that vulnerability is strength. That tears can be transformative. That the cracks in our hearts are not flaws to be concealed, but spaces where light can enter and growth can bloom.</p>
+                
+                <div class="about-quote">
+                    "We are not broken glass to be discarded. We are stained glass windows, our fractures catching the light in ways that create something more beautiful than perfection ever could."
+                </div>
+                
+                <p>Every piece in our collection carries this philosophy. The soft fabrics that embrace you like a gentle reminder that comfort is allowed. The delicate designs that whisper rather than shout, inviting connection rather than demanding attention. The thoughtful details that honor the complexity of being human.</p>
+                
+                <p>Glass Ink Haven is more than clothing. It is a sanctuary for those who are healing, growing, and learning to wear their hearts not on their sleeves, but woven into every thread of their being. It is for the ones who understand that emotional expression is not weakness—it is the bravest form of authenticity.</p>
+                
+                <p>When you wear our pieces, you are not just making a fashion statement. You are declaring that your journey matters. That your pain has purpose. That you are still becoming, still blooming, still rising.</p>
+                
+                <p>Welcome to Glass Ink Haven. Wear your healing. Embrace your growth. Turn your pain into something beautiful.</p>
+            </div>
+            
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">&#10084;</div>
+                    <h4>Healing</h4>
+                    <p>Honoring the journey of becoming whole again</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">&#9997;</div>
+                    <h4>Expression</h4>
+                    <p>Giving voice to what words cannot say</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">&#127793;</div>
+                    <h4>Growth</h4>
+                    <p>Embracing change as the path forward</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">&#10024;</div>
+                    <h4>Beauty</h4>
+                    <p>Finding light in life's broken places</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="section-header fade-in">
+            <h2>Get in Touch</h2>
+            <p>We're here to help and listen</p>
+        </div>
+        
+        <div class="contact-content fade-in">
+            <div class="contact-card">
+                <div class="contact-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                </div>
+                <h3>We'd Love to Hear From You</h3>
+                <p>Whether you have questions about your order, need assistance with sizing, or simply want to share your story, our inbox is always open.</p>
+                <a href="mailto:glassinkhaven@gmail.com" class="contact-email">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    glassinkhaven@gmail.com
+                </a>
+                <div class="contact-note">
+                    <p>If your country is not listed during checkout or you have any issues placing an order, please contact us and we will assist you personally.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">Glass Ink Haven</div>
+        <p class="footer-tagline">Wear Your Healing</p>
+        <div class="footer-links">
+            <a href="#home">Home</a>
+            <a href="#shop">Shop</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <p class="footer-copy">&copy; 2024 Glass Ink Haven. All rights reserved.</p>
+    </footer>
+
+    <!-- Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"></path>
+                </svg>
+            </button>
+            <div class="modal-body" id="modalBody">
+                <!-- Product details will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button class="cart-close" id="cartClose">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be inserted here -->
+        </div>
+        <div class="cart-footer" id="cartFooter" style="display: none;">
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="subtotal">$0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Shipping</span>
+                    <span id="shipping">$0.00</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total</span>
+                    <span id="total">$0.00</span>
+                </div>
+            </div>
+            <button class="btn btn-primary checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal checkout-modal" id="checkoutModal">
+        <div class="modal-content">
+            <button class="modal-close" id="checkoutClose">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"></path>
+                </svg>
+            </button>
+            <form class="checkout-form" id="checkoutForm">
+                <h3>Complete Your Order</h3>
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" required placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="Enter your phone number">
+                </div>
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <select id="country" name="country" required>
+                        <option value="">Select your country</option>
+                        <option value="US">United States</option>
+                        <option value="UK">United Kingdom</option>
+                        <option value="CA">Canada</option>
+                        <option value="DE">Germany</option>
+                        <option value="FR">France</option>
+                        <option value="AU">Australia</option>
+                        <option value="NG">Nigeria</option>
+                        <option value="GH">Ghana</option>
+                        <option value="KE">Kenya</option>
+                        <option value="ZA">South Africa</option>
+                        <option value="IN">India</option>
+                        <option value="BR">Brazil</option>
+                        <option value="MX">Mexico</option>
+                        <option value="JP">Japan</option>
+                        <option value="KR">South Korea</option>
+                        <option value="CN">China</option>
+                        <option value="IT">Italy</option>
+                        <option value="ES">Spain</option>
+                        <option value="NL">Netherlands</option>
+                        <option value="SE">Sweden</option>
+                        <option value="NO">Norway</option>
+                        <option value="DK">Denmark</option>
+                        <option value="FI">Finland</option>
+                        <option value="BE">Belgium</option>
+                        <option value="AT">Austria</option>
+                        <option value="CH">Switzerland</option>
+                        <option value="IE">Ireland</option>
+                        <option value="PT">Portugal</option>
+                        <option value="GR">Greece</option>
+                        <option value="PL">Poland</option>
+                        <option value="CZ">Czech Republic</option>
+                        <option value="HU">Hungary</option>
+                        <option value="RO">Romania</option>
+                        <option value="BG">Bulgaria</option>
+                        <option value="HR">Croatia</option>
+                        <option value="SI">Slovenia</option>
+                        <option value="SK">Slovakia</option>
+                        <option value="LT">Lithuania</option>
+                        <option value="LV">Latvia</option>
+                        <option value="EE">Estonia</option>
+                        <option value="UA">Ukraine</option>
+                        <option value="RU">Russia</option>
+                        <option value="TR">Turkey</option>
+                        <option value="AE">United Arab Emirates</option>
+                        <option value="SA">Saudi Arabia</option>
+                        <option value="IL">Israel</option>
+                        <option value="EG">Egypt</option>
+                        <option value="MA">Morocco</option>
+                        <option value="TN">Tunisia</option>
+                        <option value="DZ">Algeria</option>
+                        <option value="ET">Ethiopia</option>
+                        <option value="UG">Uganda</option>
+                        <option value="TZ">Tanzania</option>
+                        <option value="RW">Rwanda</option>
+                        <option value="ZM">Zambia</option>
+                        <option value="ZW">Zimbabwe</option>
+                        <option value="BW">Botswana</option>
+                        <option value="NA">Namibia</option>
+                        <option value="MZ">Mozambique</option>
+                        <option value="MG">Madagascar</option>
+                        <option value="MU">Mauritius</option>
+                        <option value="SN">Senegal</option>
+                        <option value="CI">Ivory Coast</option>
+                        <option value="CM">Cameroon</option>
+                        <option value="UG">Uganda</option>
+                        <option value="TH">Thailand</option>
+                        <option value="VN">Vietnam</option>
+                        <option value="MY">Malaysia</option>
+                        <option value="SG">Singapore</option>
+                        <option value="ID">Indonesia</option>
+                        <option value="PH">Philippines</option>
+                        <option value="NZ">New Zealand</option>
+                        <option value="FJ">Fiji</option>
+                        <option value="PG">Papua New Guinea</option>
+                        <option value="CL">Chile</option>
+                        <option value="AR">Argentina</option>
+                        <option value="CO">Colombia</option>
+                        <option value="PE">Peru</option>
+                        <option value="VE">Venezuela</option>
+                        <option value="EC">Ecuador</option>
+                        <option value="BO">Bolivia</option>
+                        <option value="PY">Paraguay</option>
+                        <option value="UY">Uruguay</option>
+                        <option value="GY">Guyana</option>
+                        <option value="SR">Suriname</option>
+                        <option value="GF">French Guiana</option>
+                        <option value="PA">Panama</option>
+                        <option value="CR">Costa Rica</option>
+                        <option value="GT">Guatemala</option>
+                        <option value="HN">Honduras</option>
+                        <option value="SV">El Salvador</option>
+                        <option value="NI">Nicaragua</option>
+                        <option value="BZ">Belize</option>
+                        <option value="JM">Jamaica</option>
+                        <option value="HT">Haiti</option>
+                        <option value="DO">Dominican Republic</option>
+                        <option value="CU">Cuba</option>
+                        <option value="PR">Puerto Rico</option>
+                        <option value="BB">Barbados</option>
+                        <option value="TT">Trinidad and Tobago</option>
+                        <option value="GD">Grenada</option>
+                        <option value="LC">Saint Lucia</option>
+                        <option value="VC">Saint Vincent and the Grenadines</option>
+                        <option value="AG">Antigua and Barbuda</option>
+                        <option value="KN">Saint Kitts and Nevis</option>
+                        <option value="DM">Dominica</option>
+                        <option value="BS">Bahamas</option>
+                        <option value="AW">Aruba</option>
+                        <option value="CW">Curacao</option>
+                        <option value="SX">Sint Maarten</option>
+                        <option value="BQ">Bonaire</option>
+                        <option value="AI">Anguilla</option>
+                        <option value="VG">British Virgin Islands</option>
+                        <option value="KY">Cayman Islands</option>
+                        <option value="TC">Turks and Caicos Islands</option>
+                        <option value="BM">Bermuda</option>
+                        <option value="GL">Greenland</option>
+                        <option value="IS">Iceland</option>
+                        <option value="FO">Faroe Islands</option>
+                        <option value="AX">Aland Islands</option>
+                        <option value="SJ">Svalbard and Jan Mayen</option>
+                        <option value="GI">Gibraltar</option>
+                        <option value="MT">Malta</option>
+                        <option value="CY">Cyprus</option>
+                        <option value="LU">Luxembourg</option>
+                        <option value="MC">Monaco</option>
+                        <option value="LI">Liechtenstein</option>
+                        <option value="SM">San Marino</option>
+                        <option value="VA">Vatican City</option>
+                        <option value="AD">Andorra</option>
+                        <option value="BY">Belarus</option>
+                        <option value="MD">Moldova</option>
+                        <option value="AM">Armenia</option>
+                        <option value="AZ">Azerbaijan</option>
+                        <option value="GE">Georgia</option>
+                        <option value="KZ">Kazakhstan</option>
+                        <option value="KG">Kyrgyzstan</option>
+                        <option value="TJ">Tajikistan</option>
+                        <option value="TM">Turkmenistan</option>
+                        <option value="UZ">Uzbekistan</option>
+                        <option value="MN">Mongolia</option>
+                        <option value="KP">North Korea</option>
+                        <option value="PK">Pakistan</option>
+                        <option value="BD">Bangladesh</option>
+                        <option value="LK">Sri Lanka</option>
+                        <option value="MV">Maldives</option>
+                        <option value="NP">Nepal</option>
+                        <option value="BT">Bhutan</option>
+                        <option value="MM">Myanmar</option>
+                        <option value="KH">Cambodia</option>
+                        <option value="LA">Laos</option>
+                        <option value="BN">Brunei</option>
+                        <option value="TL">East Timor</option>
+                        <option value="AF">Afghanistan</option>
+                        <option value="IR">Iran</option>
+                        <option value="IQ">Iraq</option>
+                        <option value="SY">Syria</option>
+                        <option value="LB">Lebanon</option>
+                        <option value="JO">Jordan</option>
+                        <option value="PS">Palestine</option>
+                        <option value="KW">Kuwait</option>
+                        <option value="QA">Qatar</option>
+                        <option value="BH">Bahrain</option>
+                        <option value="OM">Oman</option>
+                        <option value="YE">Yemen</option>
+                        <option value="SD">Sudan</option>
+                        <option value="SS">South Sudan</option>
+                        <option value="LY">Libya</option>
+                        <option value="TD">Chad</option>
+                        <option value="NE">Niger</option>
+                        <option value="ML">Mali</option>
+                        <option value="BF">Burkina Faso</option>
+                        <option value="MR">Mauritania</option>
+                        <option value="GN">Guinea</option>
+                        <option value="GW">Guinea-Bissau</option>
+                        <option value="SL">Sierra Leone</option>
+                        <option value="LR">Liberia</option>
+                        <option value="GM">Gambia</option>
+                        <option value="TG">Togo</option>
+                        <option value="BJ">Benin</option>
+                        <option value="GA">Gabon</option>
+                        <option value="GQ">Equatorial Guinea</option>
+                        <option value="CG">Congo</option>
+                        <option value="CD">Democratic Republic of the Congo</option>
+                        <option value="AO">Angola</option>
+                        <option value="GA">Gabon</option>
+                        <option value="ST">Sao Tome and Principe</option>
+                        <option value="CV">Cape Verde</option>
+                        <option value="KM">Comoros</option>
+                        <option value="SC">Seychelles</option>
+                        <option value="DJ">Djibouti</option>
+                        <option value="ER">Eritrea</option>
+                        <option value="SO">Somalia</option>
+                        <option value="BI">Burundi</option>
+                        <option value="MW">Malawi</option>
+                        <option value="LS">Lesotho</option>
+                        <option value="SZ">Eswatini</option>
+                        <option value="KM">Comoros</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="state">State/Province</label>
+                        <input type="text" id="state" name="state" required placeholder="Enter state">
+                    </div>
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" id="city" name="city" required placeholder="Enter city">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="zipCode">Zip Code</label>
+                    <input type="text" id="zipCode" name="zipCode" required placeholder="Enter zip code">
+                </div>
+                <p class="form-note">If your country is not listed, <a href="mailto:glassinkhaven@gmail.com">contact us</a> and we will assist you.</p>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;">Pay with Flutterwave</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Message -->
+    <div class="success-message" id="successMessage">
+        <div class="success-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        </div>
+        <div class="success-text">
+            <h4>Added to Cart!</h4>
+            <p>Item successfully added to your cart.</p>
+        </div>
+    </div>
+
+    <!-- Admin Button (Hidden - products now fetched from Printify) -->
+    <button class="admin-btn" id="adminBtn" title="Admin Panel" style="display: none;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+        </svg>
+    </button>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-header">
+            <h2>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                </svg>
+                Admin Dashboard
+            </h2>
+            <button class="admin-close" id="adminClose">Back to Store</button>
+        </div>
+        
+        <div class="admin-content">
+            <!-- Help Box -->
+            <div class="help-box">
+                <h4>📖 How to Use</h4>
+                <ul>
+                    <li><strong>Add Products:</strong> Fill out the form below and click "Save Product"</li>
+                    <li><strong>Image URLs:</strong> Paste direct image links (Cloudinary, Imgur, etc.) - click "+ Add Image" for multiple images</li>
+                    <li><strong>Colors:</strong> Type color names (e.g., "Pink", "Blue") or hex codes (e.g., "#FF0000") and press Enter</li>
+                    <li><strong>Sizes:</strong> Type sizes (e.g., "S", "M", "L", "XL") and press Enter</li>
+                    <li><strong>Edit/Delete:</strong> Use the "All Products" tab to manage existing items</li>
+                </ul>
+            </div>
+
+            <!-- Tabs -->
+            <div class="admin-tabs">
+                <button class="admin-tab active" data-tab="add">➕ Add New Product</button>
+                <button class="admin-tab" data-tab="list">📦 All Products</button>
+                <button class="admin-tab" data-tab="export">💾 Backup/Restore</button>
+            </div>
+
+            <!-- Add Product Section -->
+            <div class="admin-section active" id="addSection">
+                <div class="admin-card">
+                    <h3>Product Details</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Product Name *</label>
+                            <input type="text" id="adminProductName" placeholder="e.g., Lotus Healing Hoodie">
+                        </div>
+                        <div class="form-group">
+                            <label>Category *</label>
+                            <select id="adminProductCategory">
+                                <option value="">Select category</option>
+                                <option value="hoodies">Hoodies</option>
+                                <option value="tees">Tees</option>
+                                <option value="tanks">Tank Tops</option>
+                                <option value="pants">Pants</option>
+                                <option value="dresses">Dresses</option>
+                                <option value="totes">Tote Bags</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Price (USD) *</label>
+                            <input type="number" id="adminProductPrice" placeholder="e.g., 65" min="0" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>Product Images *</label>
+                            <div class="image-inputs" id="imageInputs">
+                                <div class="image-input-row">
+                                    <input type="text" class="product-image-url" placeholder="Paste image URL here (e.g., https://...)">
+                                </div>
+                            </div>
+                            <button class="add-image-btn" id="addImageBtn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 5v14M5 12h14"></path>
+                                </svg>
+                                Add Image
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 1.5rem;">
+                        <label>Description *</label>
+                        <textarea id="adminProductDescription" placeholder="Describe your product..."></textarea>
+                    </div>
+
+                    <div class="size-color-section" style="margin-top: 1.5rem;">
+                        <div class="form-group">
+                            <label>Sizes * (press Enter after each)</label>
+                            <div class="tag-input" id="sizeInput">
+                                <input type="text" id="sizeInputField" placeholder="Type size & press Enter">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Colors * (press Enter after each)</label>
+                            <div class="tag-input" id="colorInput">
+                                <input type="text" id="colorInputField" placeholder="Type color & press Enter">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-actions">
+                        <button class="admin-btn-primary" id="saveProductBtn">💾 Save Product</button>
+                        <button class="admin-btn-secondary" id="clearFormBtn">Clear Form</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product List Section -->
+            <div class="admin-section" id="listSection">
+                <div class="admin-card">
+                    <h3>All Products</h3>
+                    <div id="adminProductList">
+                        <!-- Products will be listed here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Export/Import Section -->
+            <div class="admin-section" id="exportSection">
+                <div class="admin-card">
+                    <h3>Backup & Restore</h3>
+                    <p style="margin-bottom: 1.5rem; color: var(--text-light);">Save your products to a file or restore from a previous backup.</p>
+                    
+                    <div class="form-group">
+                        <label>Current Products (JSON)</label>
+                        <textarea id="productsJson" readonly style="min-height: 200px; font-family: monospace; font-size: 0.85rem;"></textarea>
+                    </div>
+                    
+                    <div class="admin-actions">
+                        <button class="admin-btn-primary" id="exportBtn">📥 Download Backup</button>
+                        <button class="admin-btn-secondary" id="importBtn">📤 Restore from File</button>
+                        <input type="file" id="importFile" accept=".json" style="display: none;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Product Data - fetched from Printify
+        let products = [];
+
+        // Close countries for shipping
+        const closeCountries = ['US', 'UK', 'CA', 'DE', 'FR'];
+
+        // Cart State
+        let cart = [];
+        let currentProduct = null;
+        let selectedSize = null;
+        let selectedColor = null;
+        let selectedImageIndex = 0;
+
+        // Fallback products (used if Printify fetch fails)
+        const fallbackProducts = [
+            {
+                id: 1,
+                name: "Lotus Healing Hoodie",
+                category: "hoodies",
+                price: 65,
+                images: ["images/hoodie-1.jpg", "images/hoodie-2.jpg"],
+                colors: ["#E8B4B4", "#F5E6DC", "#D4C4B0"],
+                sizes: ["S", "M", "L", "XL"],
+                description: "Wrap yourself in comfort with our signature healing hoodie. Features the lotus emblem representing growth and renewal."
+            },
+            {
+                id: 2,
+                name: "Embrace & Bloom Tee",
+                category: "tees",
+                price: 35,
+                images: ["images/tee-1.jpg", "images/tee-2.jpg"],
+                colors: ["#FFFEF5", "#F8E8E8", "#E8F0E8"],
+                sizes: ["S", "M", "L", "XL"],
+                description: "A gentle reminder to embrace your journey and bloom where you are planted. Delicate floral design on premium cotton."
+            },
+            {
+                id: 3,
+                name: "Aurora Bloom Tank",
+                category: "tanks",
+                price: 28,
+                images: ["images/tank-1.jpg", "images/tank-2.jpg"],
+                colors: ["#E8D5E8", "#D5E8DD", "#F5E6DC"],
+                sizes: ["S", "M", "L", "XL"],
+                description: "Light and airy for those warm days of self-discovery. The Aurora Bloom tank brings soft comfort and mindful style."
+            },
+            {
+                id: 4,
+                name: "Serenity Flow Pants",
+                category: "pants",
+                price: 55,
+                images: ["images/pants-1.jpg", "images/pants-2.jpg"],
+                colors: ["#C5D5C5", "#E8D5E8", "#D5C5B5"],
+                sizes: ["S", "M", "L", "XL"],
+                description: "Find your flow in these beautifully draped pants. Designed for movement, meditation, and everyday comfort."
+            },
+            {
+                id: 5,
+                name: "Ethereal Grace Dress",
+                category: "dresses",
+                price: 85,
+                images: ["images/dress-1.jpg", "images/dress-2.jpg"],
+                colors: ["#E8C5C5", "#C5D5C5", "#E8D5C5"],
+                sizes: ["S", "M", "L", "XL"],
+                description: "An embodiment of gentle elegance. This flowing dress moves with you, celebrating every step of your healing journey."
+            },
+            {
+                id: 6,
+                name: "Healing Journey Tote",
+                category: "totes",
+                price: 32,
+                images: ["images/tote-1.jpg", "images/tote-2.jpg"],
+                colors: ["#F5E6DC", "#E8C5C5", "#D5E8DD"],
+                sizes: ["One Size"],
+                description: "Carry your essentials and your intentions. This eco-friendly canvas tote features minimalist botanical art."
+            }
+        ];
+
+        // Fetch products from Printify endpoint
+        async function fetchProducts() {
+            try {
+                // Show loading state
+                productsGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
+                        <p style="color: var(--text-light);">Loading products...</p>
+                    </div>
+                `;
+                
+                const res = await fetch('https://glassinkhaven.netlify.app/.netlify/functions/printify', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                });
+                
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                
+                const data = await res.json();
+                console.log('Raw response from Printify:', data);
+                
+                // Handle different response formats - Printify returns {current_page, data: [...]}
+                let printifyProducts = [];
+                if (Array.isArray(data)) {
+                    printifyProducts = data;
+                } else if (data.data && Array.isArray(data.data)) {
+                    printifyProducts = data.data;
+                } else if (data.products && Array.isArray(data.products)) {
+                    printifyProducts = data.products;
+                }
+                
+                console.log('Printify products loaded:', printifyProducts.length, 'products');
+                
+                if (printifyProducts.length === 0) {
+                    throw new Error('No products found in response');
+                }
+                
+                // Transform Printify products to our format
+                products = printifyProducts.map((p, index) => ({
+                    id: p.id || index + 1,
+                    name: p.title || 'Untitled Product',
+                    category: mapCategory(p.blueprint_id, p.title, p.tags),
+                    price: parseFloat(p.variants?.find(v => v.is_enabled)?.price || p.variants?.[0]?.price) / 100 || 0,
+                    images: p.images?.map(img => img.src) || ['images/placeholder.jpg'],
+                    colors: extractColors(p),
+                    sizes: extractSizes(p),
+                    description: cleanDescription(p.description) || 'Beautiful healing fashion piece from Glass Ink Haven.',
+                    printifyData: p
+                }));
+                
+                console.log('Transformed products:', products);
+                
+                // Render products after fetching
+                renderProducts('all');
+                
+            } catch (err) {
+                console.error('Error fetching Printify products:', err);
+                // Use fallback products
+                products = fallbackProducts;
+                renderProducts('all');
+            }
+        }
+
+        // Clean HTML description to plain text
+        function cleanDescription(html) {
+            if (!html) return '';
+            // Create a temporary element to strip HTML
+            const tmp = document.createElement('div');
+            tmp.innerHTML = html;
+            let text = tmp.textContent || tmp.innerText || '';
+            // Limit to 200 characters
+            return text.substring(0, 200) + (text.length > 200 ? '...' : '');
+        }
+
+        // Map Printify product to our category format using blueprint_id, title, and tags
+        function mapCategory(blueprintId, title, tags) {
+            const titleLower = (title || '').toLowerCase();
+            const tagsLower = (tags || []).join(' ').toLowerCase();
+            const combined = titleLower + ' ' + tagsLower;
+            
+            // Check title and tags for category hints
+            if (combined.includes('hoodie') || combined.includes('sweatshirt')) return 'hoodies';
+            if (combined.includes('t-shirt') || combined.includes('t shirt') || combined.includes('tee') || combined.includes('shirt')) return 'tees';
+            if (combined.includes('tank') || combined.includes('camisole')) return 'tanks';
+            if (combined.includes('pant') || combined.includes('jogger') || combined.includes('legging')) return 'pants';
+            if (combined.includes('dress') || combined.includes('gown')) return 'dresses';
+            if (combined.includes('tote') || combined.includes('bag') || combined.includes('backpack')) return 'totes';
+            
+            // Default categories based on common Printify blueprint patterns
+            if (combined.includes('necklace') || combined.includes('jewelry') || combined.includes('bear') || combined.includes('blanket') || combined.includes('pillow')) {
+                return 'other';
+            }
+            
+            return 'other';
+        }
+
+        // Extract colors from Printify product options
+        function extractColors(product) {
+            const colors = [];
+            if (product.options) {
+                const colorOption = product.options.find(opt => 
+                    opt.name?.toLowerCase().includes('color') || 
+                    opt.name?.toLowerCase().includes('colour')
+                );
+                if (colorOption && colorOption.values) {
+                    colorOption.values.forEach(v => {
+                        if (v.colors && v.colors.length > 0) {
+                            colors.push(v.colors[0]);
+                        } else if (v.title) {
+                            colors.push(v.title);
+                        }
+                    });
+                }
+            }
+            // Fallback colors if none found
+            if (colors.length === 0) {
+                return ['#D4A5A5', '#F5E6DC', '#C5D5C5'];
+            }
+            return colors;
+        }
+
+        // Extract sizes from Printify product options
+        function extractSizes(product) {
+            const sizes = [];
+            if (product.options) {
+                const sizeOption = product.options.find(opt => 
+                    opt.name?.toLowerCase().includes('size')
+                );
+                if (sizeOption && sizeOption.values) {
+                    sizeOption.values.forEach(v => {
+                        if (v.title) sizes.push(v.title);
+                    });
+                }
+            }
+            // Fallback sizes if none found
+            if (sizes.length === 0) {
+                return ['S', 'M', 'L', 'XL'];
+            }
+            return sizes;
+        }
+
+        // DOM Elements
+        const productsGrid = document.getElementById('productsGrid');
+        const productModal = document.getElementById('productModal');
+        const modalBody = document.getElementById('modalBody');
+        const modalClose = document.getElementById('modalClose');
+        const cartBtn = document.getElementById('cartBtn');
+        const cartSidebar = document.getElementById('cartSidebar');
+        const cartOverlay = document.getElementById('cartOverlay');
+        const cartClose = document.getElementById('cartClose');
+        const cartItems = document.getElementById('cartItems');
+        const cartCount = document.getElementById('cartCount');
+        const cartFooter = document.getElementById('cartFooter');
+        const subtotalEl = document.getElementById('subtotal');
+        const shippingEl = document.getElementById('shipping');
+        const totalEl = document.getElementById('total');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const checkoutModal = document.getElementById('checkoutModal');
+        const checkoutClose = document.getElementById('checkoutClose');
+        const checkoutForm = document.getElementById('checkoutForm');
+        const successMessage = document.getElementById('successMessage');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchProducts();
+            setupEventListeners();
+            setupScrollAnimations();
+        });
+
+        // Render Products
+        function renderProducts(filter) {
+            // Show loading state if products haven't loaded yet
+            if (products.length === 0) {
+                productsGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
+                        <p style="color: var(--text-light);">Loading products...</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const filteredProducts = filter === 'all' 
+                ? products 
+                : products.filter(p => p.category === filter);
+            
+            if (filteredProducts.length === 0) {
+                productsGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
+                        <p style="color: var(--text-light);">No products found in this category.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            productsGrid.innerHTML = filteredProducts.map(product => `
+                <div class="product-card" data-id="${product.id}" data-category="${product.category}">
+                    <div class="product-image">
+                        <img src="${product.images[0]}" alt="${product.name}" loading="lazy" onerror="this.src='images/placeholder.jpg'">
+                        <span class="product-badge">${product.category}</span>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">${product.category}</p>
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-price">$${product.price.toFixed(2)}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Add click handlers
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const productId = card.dataset.id;
+                    openProductModal(productId);
+                });
+            });
+        }
+
+        // Open Product Modal
+        function openProductModal(productId) {
+            currentProduct = products.find(p => p.id == productId);
+            if (!currentProduct) return;
+            
+            selectedSize = currentProduct.sizes[0];
+            selectedColor = currentProduct.colors[0];
+            selectedImageIndex = 0;
+            
+            renderModalContent();
+            productModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Render Modal Content
+        function renderModalContent() {
+            modalBody.innerHTML = `
+                <div class="product-gallery">
+                    <div class="main-image">
+                        <img src="${currentProduct.images[selectedImageIndex]}" alt="${currentProduct.name}">
+                    </div>
+                    <div class="thumbnail-list">
+                        ${currentProduct.images.map((img, idx) => `
+                            <div class="thumbnail ${idx === selectedImageIndex ? 'active' : ''}" data-index="${idx}">
+                                <img src="${img}" alt="${currentProduct.name} view ${idx + 1}">
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <div class="product-details">
+                    <p class="product-category">${currentProduct.category}</p>
+                    <h3>${currentProduct.name}</h3>
+                    <p class="price">$${currentProduct.price.toFixed(2)}</p>
+                    <p class="description">${currentProduct.description}</p>
+                    
+                    <div class="option-group">
+                        <label class="option-label">Size</label>
+                        <div class="size-options">
+                            ${currentProduct.sizes.map(size => `
+                                <button class="size-btn ${size === selectedSize ? 'active' : ''}" data-size="${size}">${size}</button>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="option-group">
+                        <label class="option-label">Color</label>
+                        <div class="color-options">
+                            ${currentProduct.colors.map(color => `
+                                <button class="color-btn ${color === selectedColor ? 'active' : ''}" 
+                                        data-color="${color}" 
+                                        style="background-color: ${color}"></button>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary add-to-cart-btn" id="addToCartBtn">
+                        Add to Cart - $${currentProduct.price.toFixed(2)}
+                    </button>
+                </div>
+            `;
+
+            // Thumbnail click handlers
+            modalBody.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.addEventListener('click', () => {
+                    selectedImageIndex = parseInt(thumb.dataset.index);
+                    renderModalContent();
+                });
+            });
+
+            // Size button handlers
+            modalBody.querySelectorAll('.size-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    selectedSize = btn.dataset.size;
+                    renderModalContent();
+                });
+            });
+
+            // Color button handlers
+            modalBody.querySelectorAll('.color-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    selectedColor = btn.dataset.color;
+                    renderModalContent();
+                });
+            });
+
+            // Add to cart button
+            document.getElementById('addToCartBtn').addEventListener('click', addToCart);
+        }
+
+        // Add to Cart
+        function addToCart() {
+            const existingItem = cart.find(item => 
+                item.id === currentProduct.id && 
+                item.size === selectedSize && 
+                item.color === selectedColor
+            );
+
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({
+                    id: currentProduct.id,
+                    name: currentProduct.name,
+                    price: currentProduct.price,
+                    image: currentProduct.images[0],
+                    size: selectedSize,
+                    color: selectedColor,
+                    quantity: 1
+                });
+            }
+
+            updateCart();
+            closeProductModal();
+            showSuccessMessage();
+        }
+
+        // Update Cart
+        function updateCart() {
+            cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="cart-empty">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M6 6h15l-1.5 9h-12z"></path>
+                            <circle cx="9" cy="20" r="1"></circle>
+                            <circle cx="18" cy="20" r="1"></circle>
+                            <path d="M6 6L5 3H2"></path>
+                        </svg>
+                        <p>Your cart is empty</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Add some beautiful pieces to get started</p>
+                    </div>
+                `;
+                cartFooter.style.display = 'none';
+            } else {
+                cartItems.innerHTML = cart.map((item, index) => `
+                    <div class="cart-item">
+                        <div class="cart-item-image">
+                            <img src="${item.image}" alt="${item.name}">
+                        </div>
+                        <div class="cart-item-details">
+                            <h4 class="cart-item-name">${item.name}</h4>
+                            <p class="cart-item-variant">Size: ${item.size} | Color: <span style="display: inline-block; width: 12px; height: 12px; background: ${item.color}; border-radius: 50%; vertical-align: middle;"></span></p>
+                            <p class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</p>
+                            <div class="cart-item-actions">
+                                <button class="quantity-btn" data-action="decrease" data-index="${index}">-</button>
+                                <span class="cart-item-quantity">${item.quantity}</span>
+                                <button class="quantity-btn" data-action="increase" data-index="${index}">+</button>
+                                <button class="remove-item" data-index="${index}">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                cartFooter.style.display = 'block';
+
+                // Add event listeners
+                cartItems.querySelectorAll('.quantity-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const index = parseInt(e.target.dataset.index);
+                        const action = e.target.dataset.action;
+                        if (action === 'increase') {
+                            cart[index].quantity++;
+                        } else if (action === 'decrease') {
+                            if (cart[index].quantity > 1) {
+                                cart[index].quantity--;
+                            } else {
+                                cart.splice(index, 1);
+                            }
+                        }
+                        updateCart();
+                    });
+                });
+
+                cartItems.querySelectorAll('.remove-item').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const index = parseInt(e.target.dataset.index);
+                        cart.splice(index, 1);
+                        updateCart();
+                    });
+                });
+            }
+
+            updateCartTotals();
+        }
+
+        // Update Cart Totals
+        function updateCartTotals() {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            
+            // Get selected country from form if available
+            const countrySelect = document.getElementById('country');
+            const selectedCountry = countrySelect ? countrySelect.value : '';
+            
+            const shipping = calculateShipping(selectedCountry, itemCount);
+            const total = subtotal + shipping;
+
+            subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+            shippingEl.textContent = `$${shipping.toFixed(2)}`;
+            totalEl.textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Calculate Shipping
+        function calculateShipping(country, itemCount) {
+            if (itemCount === 0) return 0;
+            
+            const isCloseCountry = closeCountries.includes(country);
+            const baseRate = isCloseCountry ? 10 : 15;
+            const additionalRate = isCloseCountry ? 3 : 4;
+            
+            return baseRate + (itemCount - 1) * additionalRate;
+        }
+
+        // Show Success Message
+        function showSuccessMessage() {
+            successMessage.classList.add('active');
+            setTimeout(() => {
+                successMessage.classList.remove('active');
+            }, 3000);
+        }
+
+        // Close Product Modal
+        function closeProductModal() {
+            productModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Open Cart
+        function openCart() {
+            cartSidebar.classList.add('active');
+            cartOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close Cart
+        function closeCart() {
+            cartSidebar.classList.remove('active');
+            cartOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Open Checkout
+        function openCheckout() {
+            closeCart();
+            checkoutModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close Checkout
+        function closeCheckout() {
+            checkoutModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Setup Event Listeners
+        function setupEventListeners() {
+            // Filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderProducts(btn.dataset.filter);
+                });
+            });
+
+            // Modal close
+            modalClose.addEventListener('click', closeProductModal);
+            productModal.addEventListener('click', (e) => {
+                if (e.target === productModal) closeProductModal();
+            });
+
+            // Cart
+            cartBtn.addEventListener('click', openCart);
+            cartClose.addEventListener('click', closeCart);
+            cartOverlay.addEventListener('click', closeCart);
+
+            // Checkout
+            checkoutBtn.addEventListener('click', openCheckout);
+            checkoutClose.addEventListener('click', closeCheckout);
+            checkoutModal.addEventListener('click', (e) => {
+                if (e.target === checkoutModal) closeCheckout();
+            });
+
+            // Country change - update shipping
+            document.getElementById('country').addEventListener('change', updateCartTotals);
+
+            // Checkout form
+            checkoutForm.addEventListener('submit', handleCheckout);
+
+            // Mobile menu
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+
+            // Close mobile menu on link click
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                });
+            });
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeProductModal();
+                    closeCart();
+                    closeCheckout();
+                }
+            });
+        }
+
+        // Handle Checkout
+        function handleCheckout(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const customerInfo = {
+                name: formData.get('fullName'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                country: formData.get('country'),
+                state: formData.get('state'),
+                city: formData.get('city'),
+                zipCode: formData.get('zipCode')
+            };
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const shipping = calculateShipping(customerInfo.country, itemCount);
+            const total = subtotal + shipping;
+
+            // Flutterwave Payment
+            FlutterwaveCheckout({
+                public_key: "FLWPUBK-e5b0b3984de5cd1a81b4f591a0bf4481-X",
+                tx_ref: "GLASSINK_" + Date.now(),
+                amount: total,
+                currency: "USD",
+                payment_options: "card, mobilemoney, ussd",
+                customer: {
+                    email: customerInfo.email,
+                    phone_number: customerInfo.phone,
+                    name: customerInfo.name,
+                },
+                customizations: {
+                    title: "Glass Ink Haven",
+                    description: "Payment for your healing fashion items",
+                    logo: "https://via.placeholder.com/100x100/F5E6E0/4A4A4A?text=G",
+                },
+                callback: function(data) {
+                    if (data.status === "successful") {
+                        // Clear cart
+                        cart = [];
+                        updateCart();
+                        closeCheckout();
+                        
+                        // Show success
+                        alert("Thank you for your order! Your payment was successful. We will send you a confirmation email shortly.");
+                        
+                        // Reset form
+                        checkoutForm.reset();
+                    }
+                },
+                onclose: function() {
+                    // Modal closed
+                }
+            });
+        }
+
+        // Scroll Animations
+        function setupScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // ==================== ADMIN PANEL ====================
+        
+        // Admin State
+        let adminSizes = [];
+        let adminColors = [];
+        let editingProductId = null;
+
+        // Admin DOM Elements
+        const adminBtn = document.getElementById('adminBtn');
+        const adminPanel = document.getElementById('adminPanel');
+        const adminClose = document.getElementById('adminClose');
+        const adminTabs = document.querySelectorAll('.admin-tab');
+        const adminSections = document.querySelectorAll('.admin-section');
+        const addImageBtn = document.getElementById('addImageBtn');
+        const imageInputs = document.getElementById('imageInputs');
+        const saveProductBtn = document.getElementById('saveProductBtn');
+        const clearFormBtn = document.getElementById('clearFormBtn');
+        const sizeInputField = document.getElementById('sizeInputField');
+        const colorInputField = document.getElementById('colorInputField');
+        const sizeInput = document.getElementById('sizeInput');
+        const colorInput = document.getElementById('colorInput');
+        const productsJson = document.getElementById('productsJson');
+        const exportBtn = document.getElementById('exportBtn');
+        const importBtn = document.getElementById('importBtn');
+        const importFile = document.getElementById('importFile');
+
+        // Initialize Admin Panel (View-only for Printify products)
+        function initAdminPanel() {
+            // Admin button click - now shows read-only product info from Printify
+            adminBtn.addEventListener('click', () => {
+                adminPanel.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                updateAdminProductList();
+                updateProductsJson();
+            });
+
+            // Admin close button
+            adminClose.addEventListener('click', () => {
+                adminPanel.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+
+            // Tab switching
+            adminTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    adminTabs.forEach(t => t.classList.remove('active'));
+                    adminSections.forEach(s => s.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById(tab.dataset.tab + 'Section').classList.add('active');
+                    
+                    if (tab.dataset.tab === 'list') {
+                        updateAdminProductList();
+                    } else if (tab.dataset.tab === 'export') {
+                        updateProductsJson();
+                    }
+                });
+            });
+
+            // Add image input
+            addImageBtn.addEventListener('click', () => {
+                const row = document.createElement('div');
+                row.className = 'image-input-row';
+                row.innerHTML = `
+                    <input type="text" class="product-image-url" placeholder="Paste image URL here">
+                    <button type="button" onclick="this.parentElement.remove()">Remove</button>
+                `;
+                imageInputs.appendChild(row);
+            });
+
+            // Size tag input
+            sizeInputField.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const value = e.target.value.trim();
+                    if (value && !adminSizes.includes(value)) {
+                        adminSizes.push(value);
+                        renderSizeTags();
+                    }
+                    e.target.value = '';
+                }
+            });
+
+            // Color tag input
+            colorInputField.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const value = e.target.value.trim();
+                    if (value && !adminColors.includes(value)) {
+                        adminColors.push(value);
+                        renderColorTags();
+                    }
+                    e.target.value = '';
+                }
+            });
+
+            // Save product
+            saveProductBtn.addEventListener('click', saveProduct);
+
+            // Clear form
+            clearFormBtn.addEventListener('click', clearAdminForm);
+
+            // Export/Import
+            exportBtn.addEventListener('click', exportProducts);
+            importBtn.addEventListener('click', () => importFile.click());
+            importFile.addEventListener('change', importProducts);
+        }
+
+        // Render size tags
+        function renderSizeTags() {
+            const tagsHtml = adminSizes.map((size, index) => `
+                <span class="tag">${size} <button onclick="removeSize(${index})">&times;</button></span>
+            `).join('');
+            sizeInput.innerHTML = tagsHtml + '<input type="text" id="sizeInputField" placeholder="Type size & press Enter">';
+            // Re-attach event listener
+            document.getElementById('sizeInputField').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const value = e.target.value.trim();
+                    if (value && !adminSizes.includes(value)) {
+                        adminSizes.push(value);
+                        renderSizeTags();
+                    }
+                }
+            });
+        }
+
+        // Render color tags
+        function renderColorTags() {
+            const tagsHtml = adminColors.map((color, index) => `
+                <span class="tag" style="background: ${color.startsWith('#') ? color : 'var(--secondary)'}">${color} <button onclick="removeColor(${index})">&times;</button></span>
+            `).join('');
+            colorInput.innerHTML = tagsHtml + '<input type="text" id="colorInputField" placeholder="Type color & press Enter">';
+            // Re-attach event listener
+            document.getElementById('colorInputField').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const value = e.target.value.trim();
+                    if (value && !adminColors.includes(value)) {
+                        adminColors.push(value);
+                        renderColorTags();
+                    }
+                }
+            });
+        }
+
+        // Remove size
+        window.removeSize = function(index) {
+            adminSizes.splice(index, 1);
+            renderSizeTags();
+        };
+
+        // Remove color
+        window.removeColor = function(index) {
+            adminColors.splice(index, 1);
+            renderColorTags();
+        };
+
+        // Save product
+        function saveProduct() {
+            const name = document.getElementById('adminProductName').value.trim();
+            const category = document.getElementById('adminProductCategory').value;
+            const price = parseFloat(document.getElementById('adminProductPrice').value);
+            const description = document.getElementById('adminProductDescription').value.trim();
+            
+            // Get image URLs
+            const imageUrls = [];
+            document.querySelectorAll('.product-image-url').forEach(input => {
+                if (input.value.trim()) {
+                    imageUrls.push(input.value.trim());
+                }
+            });
+
+            // Validation
+            if (!name || !category || !price || imageUrls.length === 0 || adminSizes.length === 0 || adminColors.length === 0 || !description) {
+                alert('Please fill in all required fields!');
+                return;
+            }
+
+            const productData = {
+                id: editingProductId || Date.now(),
+                name,
+                category,
+                price,
+                images: imageUrls,
+                colors: adminColors,
+                sizes: adminSizes,
+                description
+            };
+
+            if (editingProductId) {
+                // Update existing
+                const index = products.findIndex(p => p.id === editingProductId);
+                if (index !== -1) {
+                    products[index] = productData;
+                }
+                editingProductId = null;
+                saveProductBtn.textContent = '💾 Save Product';
+            } else {
+                // Add new
+                products.push(productData);
+            }
+
+            // Save to localStorage
+            localStorage.setItem('glassInkProducts', JSON.stringify(products));
+
+            // Clear form
+            clearAdminForm();
+
+            // Refresh product display
+            renderProducts('all');
+
+            // Show success
+            alert('Product saved successfully!');
+        }
+
+        // Clear admin form
+        function clearAdminForm() {
+            document.getElementById('adminProductName').value = '';
+            document.getElementById('adminProductCategory').value = '';
+            document.getElementById('adminProductPrice').value = '';
+            document.getElementById('adminProductDescription').value = '';
+            imageInputs.innerHTML = `
+                <div class="image-input-row">
+                    <input type="text" class="product-image-url" placeholder="Paste image URL here">
+                </div>
+            `;
+            adminSizes = [];
+            adminColors = [];
+            renderSizeTags();
+            renderColorTags();
+            editingProductId = null;
+            saveProductBtn.textContent = '💾 Save Product';
+        }
+
+        // Update admin product list (view-only for Printify products)
+        function updateAdminProductList() {
+            const listContainer = document.getElementById('adminProductList');
+            
+            if (products.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="empty-state">
+                        <p>Loading products from Printify...</p>
+                    </div>
+                `;
+                return;
+            }
+
+            listContainer.innerHTML = `
+                <table class="product-table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${products.map(product => `
+                            <tr>
+                                <td><img src="${product.images[0]}" alt="${product.name}" onerror="this.src='images/placeholder.jpg'"></td>
+                                <td>${product.name}</td>
+                                <td>${product.category}</td>
+                                <td>$${product.price.toFixed(2)}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+                <p style="margin-top: 1rem; color: var(--text-light); font-size: 0.9rem;">
+                    Products are synced from Printify. Manage them in your Printify dashboard.
+                </p>
+            `;
+        }
+
+        // Edit product (disabled - managed via Printify)
+        window.editProduct = function(productId) {
+            alert('Products are managed through Printify. Please edit them in your Printify dashboard.');
+        }
+
+        // Delete product (disabled - managed via Printify)
+        window.deleteProduct = function(productId) {
+            alert('Products are managed through Printify. Please delete them in your Printify dashboard.');
+        }
+
+        // Legacy edit function (kept for compatibility but disabled)
+        window._legacyEditProduct = function(productId) {
+            const product = products.find(p => p.id == productId);
+            if (!product) return;
+
+            editingProductId = productId;
+            
+            // Fill form
+            document.getElementById('adminProductName').value = product.name;
+            document.getElementById('adminProductCategory').value = product.category;
+            document.getElementById('adminProductPrice').value = product.price;
+            document.getElementById('adminProductDescription').value = product.description;
+            
+            // Fill images
+            imageInputs.innerHTML = product.images.map((img, i) => `
+                <div class="image-input-row">
+                    <input type="text" class="product-image-url" value="${img}" placeholder="Paste image URL here">
+                    ${i > 0 ? '<button type="button" onclick="this.parentElement.remove()">Remove</button>' : ''}
+                </div>
+            `).join('');
+
+            // Fill sizes and colors
+            adminSizes = [...product.sizes];
+            adminColors = [...product.colors];
+            renderSizeTags();
+            renderColorTags();
+
+            // Switch to add tab
+            adminTabs.forEach(t => t.classList.remove('active'));
+            adminSections.forEach(s => s.classList.remove('active'));
+            document.querySelector('[data-tab="add"]').classList.add('active');
+            document.getElementById('addSection').classList.add('active');
+
+            saveProductBtn.textContent = '💾 Update Product';
+        };
+
+        // Update products JSON display
+        function updateProductsJson() {
+            productsJson.value = JSON.stringify(products, null, 2);
+        }
+
+        // Export products
+        function exportProducts() {
+            const dataStr = JSON.stringify(products, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `glass-ink-products-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Import products (disabled - products come from Printify)
+        function importProducts(e) {
+            alert('Products are automatically synced from Printify. Import is disabled.');
+            return;
+            
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const imported = JSON.parse(event.target.result);
+                    if (Array.isArray(imported)) {
+                        products.length = 0;
+                        imported.forEach(p => products.push(p));
+                        localStorage.setItem('glassInkProducts', JSON.stringify(products));
+                        renderProducts('all');
+                        updateAdminProductList();
+                        updateProductsJson();
+                        alert('Products restored successfully!');
+                    } else {
+                        alert('Invalid file format');
+                    }
+                } catch (err) {
+                    alert('Error reading file: ' + err.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Initialize admin panel on load
+        initAdminPanel();
+    </script>
+</body>
+</html>
 
