@@ -16,13 +16,12 @@
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #555; }
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .glass-dark { background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .glass-dark { background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .gradient-text { background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #667eea 100%); background-size: 400% 400%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: gradientShift 8s ease infinite; }
         @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
         .float { animation: float 6s ease-in-out infinite; }
         .glow { box-shadow: 0 0 40px rgba(102, 126, 234, 0.3); }
-        .glow-hover:hover { box-shadow: 0 0 60px rgba(102, 126, 234, 0.5); }
         .product-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .product-card:hover { transform: translateY(-8px); }
         .product-card:hover .product-image { transform: scale(1.05); }
@@ -33,7 +32,7 @@
         @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
         .shimmer { background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
         .filter-pill.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-color: transparent; }
-        .gallery-thumb { opacity: 0.6; transition: all 0.3s ease; }
+        .gallery-thumb { opacity: 0.6; transition: all 0.3s ease; border: 2px solid transparent; }
         .gallery-thumb:hover, .gallery-thumb.active { opacity: 1; border-color: #667eea; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         .animate-in { animation: fadeInUp 0.6s ease forwards; }
@@ -42,7 +41,17 @@
         .size-option.selected { background: #667eea; border-color: #667eea; color: white; }
         .toast { transform: translateY(100px); opacity: 0; transition: all 0.3s ease; }
         .toast.show { transform: translateY(0); opacity: 1; }
-        .support-section { border-top: 1px solid rgba(255, 255, 255, 0.1); }
+        
+        /* Modal Styles */
+        .modal-overlay { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content { transform: scale(0.9) translateY(20px); transition: all 0.3s ease; }
+        .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
+        
+        /* Info Modal Specific */
+        .info-modal { max-height: 80vh; overflow-y: auto; }
+        .info-modal::-webkit-scrollbar { width: 6px; }
+        .info-modal::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
     </style>
 </head>
 <body class="antialiased">
@@ -54,7 +63,7 @@
             <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
                 <a href="#shop" class="hover:text-white transition-colors">Shop</a>
                 <a href="#about" class="hover:text-white transition-colors">Our Story</a>
-                <a href="#support" class="hover:text-white transition-colors">Support</a>
+                <button onclick="openModal('shipping-modal')" class="hover:text-white transition-colors">Support</button>
                 <button onclick="scrollToFooter()" class="hover:text-white transition-colors">Contact</button>
             </div>
             <button onclick="toggleCart()" class="relative magnetic-btn p-2 hover:bg-white/5 rounded-full transition-colors">
@@ -125,8 +134,8 @@
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
             <div class="w-full md:w-1/2 bg-gray-900/50 flex items-center justify-center p-4 md:p-8 relative">
-                <img id="modal-main-image" src="" alt="" class="max-h-full max-w-full object-contain rounded-lg">
-                <div id="modal-thumbnails" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2"></div>
+                <img id="modal-main-image" src="" alt="" class="max-h-full max-w-full object-contain rounded-lg cursor-pointer" onclick="nextImage()">
+                <div id="modal-thumbnails" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 flex-wrap justify-center max-w-full px-4"></div>
             </div>
             <div class="w-full md:w-1/2 p-6 md:p-10 overflow-y-auto">
                 <h3 id="modal-title" class="font-display text-3xl font-bold mb-2"></h3>
@@ -169,7 +178,7 @@
         </div>
     </div>
 
-    <!-- About Section -->
+    <!-- About Section - NO IMAGE -->
     <section id="about" class="w-full px-6 lg:px-12 py-24 relative overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/10 to-transparent"></div>
         <div class="relative z-10 max-w-4xl mx-auto text-center">
@@ -217,130 +226,6 @@
         </div>
     </section>
 
-    <!-- Support Sections -->
-    <section id="support" class="w-full px-6 lg:px-12 py-24 relative">
-        <div class="max-w-4xl mx-auto space-y-24">
-            
-            <!-- Shipping & Returns -->
-            <div class="support-section pt-16">
-                <h3 class="font-display text-3xl font-bold mb-8 text-center">Shipping & Returns</h3>
-                <div class="glass rounded-2xl p-8 space-y-6">
-                    <p class="text-gray-300">All items are made-to-order. This means your product is created specifically for you after you place an order.</p>
-                    
-                    <div class="space-y-4">
-                        <p class="text-white font-semibold">Because of this, we do not accept returns or exchanges for:</p>
-                        <ul class="list-disc list-inside text-gray-400 space-y-1 ml-4">
-                            <li>Wrong size selected</li>
-                            <li>Wrong color selected</li>
-                            <li>Change of mind</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="space-y-4">
-                        <p class="text-white font-semibold">However, if your item arrives damaged or there is a production error:</p>
-                        <ul class="list-disc list-inside text-gray-400 space-y-1 ml-4">
-                            <li>Contact us within 30 days of delivery</li>
-                            <li>Send a clear photo of the issue</li>
-                            <li>We will offer a free replacement or refund</li>
-                        </ul>
-                        <p class="text-gray-300">No need to return the item.</p>
-                    </div>
-                    
-                    <div class="space-y-2">
-                        <p class="text-white font-semibold">If delivery fails due to incorrect address:</p>
-                        <p class="text-gray-400">You may request a reprint (extra cost) or partial refund</p>
-                    </div>
-                    
-                    <p class="text-sm text-gray-500 italic">Please note: Slight differences in print placement are normal and not considered defects.</p>
-                </div>
-            </div>
-
-            <!-- Size Guide -->
-            <div class="support-section pt-16">
-                <h3 class="font-display text-3xl font-bold mb-8 text-center">Size Guide</h3>
-                <div class="glass rounded-2xl p-8">
-                    <p class="text-gray-300 mb-6">All our clothing is unisex.</p>
-                    
-                    <p class="text-white font-semibold mb-4">Sizes available: S, M, L, XL</p>
-                    
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                        <div class="text-center p-4 bg-white/5 rounded-lg">
-                            <p class="font-bold text-lg">S</p>
-                            <p class="text-sm text-gray-400">Chest: 34-36"</p>
-                        </div>
-                        <div class="text-center p-4 bg-white/5 rounded-lg">
-                            <p class="font-bold text-lg">M</p>
-                            <p class="text-sm text-gray-400">Chest: 38-40"</p>
-                        </div>
-                        <div class="text-center p-4 bg-white/5 rounded-lg">
-                            <p class="font-bold text-lg">L</p>
-                            <p class="text-sm text-gray-400">Chest: 42-44"</p>
-                        </div>
-                        <div class="text-center p-4 bg-white/5 rounded-lg">
-                            <p class="font-bold text-lg">XL</p>
-                            <p class="text-sm text-gray-400">Chest: 46-48"</p>
-                        </div>
-                    </div>
-                    
-                    <p class="text-amber-400 text-sm">Please check your size carefully before ordering. We do not accept returns for size-related issues.</p>
-                </div>
-            </div>
-
-            <!-- Care Instructions -->
-            <div class="support-section pt-16">
-                <h3 class="font-display text-3xl font-bold mb-8 text-center">Care Instructions</h3>
-                <div class="glass rounded-2xl p-8">
-                    <p class="text-gray-300 mb-6">To keep your pieces looking fresh and lasting longer:</p>
-                    
-                    <ul class="space-y-3 text-gray-400">
-                        <li class="flex items-center gap-3"><span class="w-2 h-2 bg-purple-500 rounded-full"></span>Wash inside-out</li>
-                        <li class="flex items-center gap-3"><span class="w-2 h-2 bg-purple-500 rounded-full"></span>Use cold water</li>
-                        <li class="flex items-center gap-3"><span class="w-2 h-2 bg-purple-500 rounded-full"></span>Do not bleach</li>
-                        <li class="flex items-center gap-3"><span class="w-2 h-2 bg-purple-500 rounded-full"></span>Do not iron directly on the print</li>
-                        <li class="flex items-center gap-3"><span class="w-2 h-2 bg-purple-500 rounded-full"></span>Air dry recommended</li>
-                    </ul>
-                    
-                    <p class="mt-6 text-white font-display italic">Treat it with care — it was made with meaning.</p>
-                </div>
-            </div>
-
-            <!-- FAQ -->
-            <div class="support-section pt-16">
-                <h3 class="font-display text-3xl font-bold mb-8 text-center">FAQ</h3>
-                <div class="space-y-4">
-                    <div class="glass rounded-xl p-6">
-                        <p class="font-semibold text-white mb-2">1. How long does shipping take?</p>
-                        <p class="text-gray-400">Production takes 2–5 business days. Shipping typically takes 5–10 business days depending on your location.</p>
-                    </div>
-                    <div class="glass rounded-xl p-6">
-                        <p class="font-semibold text-white mb-2">2. How is shipping calculated?</p>
-                        <p class="text-gray-400">Shipping depends on your country and number of items. It is calculated automatically at checkout.</p>
-                    </div>
-                    <div class="glass rounded-xl p-6">
-                        <p class="font-semibold text-white mb-2">3. Do you ship worldwide?</p>
-                        <p class="text-gray-400">Yes, we ship worldwide.</p>
-                    </div>
-                    <div class="glass rounded-xl p-6">
-                        <p class="font-semibold text-white mb-2">4. Can I return my item?</p>
-                        <p class="text-gray-400">We do not accept returns for size or preference issues since items are made-to-order.</p>
-                    </div>
-                    <div class="glass rounded-xl p-6">
-                        <p class="font-semibold text-white mb-2">5. What if my item is damaged?</p>
-                        <p class="text-gray-400">Contact us within 30 days with a photo and we will replace or refund it.</p>
-                    </div>
-                    <div class="glass rounded-xl p-6">
-                        <p class="font-semibold text-white mb-2">6. Can I customize or personalize a product?</p>
-                        <p class="text-gray-400">Yes. Please contact us at <a href="mailto:glassinkhaven@gmail.com" class="text-purple-400 hover:underline">glassinkhaven@gmail.com</a> and we will assist you.</p>
-                    </div>
-                    <div class="glass rounded-xl p-6">
-                        <p class="font-semibold text-white mb-2">7. How can I track my order?</p>
-                        <p class="text-gray-400">Once your order is shipped, you will receive a tracking link via email.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Footer -->
     <footer id="footer" class="w-full px-6 lg:px-12 py-16 border-t border-white/10 mt-24 bg-black/50">
         <div class="max-w-6xl mx-auto grid md:grid-cols-4 gap-12">
@@ -369,10 +254,10 @@
             <div>
                 <h4 class="font-display text-lg font-semibold mb-6 gradient-text">Support</h4>
                 <ul class="space-y-3 text-sm text-gray-400">
-                    <li><a href="#support" class="hover:text-white transition-colors">Shipping & Returns</a></li>
-                    <li><a href="#support" class="hover:text-white transition-colors">Size Guide</a></li>
-                    <li><a href="#support" class="hover:text-white transition-colors">Care Instructions</a></li>
-                    <li><a href="#support" class="hover:text-white transition-colors">FAQ</a></li>
+                    <li><button onclick="openModal('shipping-modal')" class="hover:text-white transition-colors text-left">Shipping & Returns</button></li>
+                    <li><button onclick="openModal('size-modal')" class="hover:text-white transition-colors text-left">Size Guide</button></li>
+                    <li><button onclick="openModal('care-modal')" class="hover:text-white transition-colors text-left">Care Instructions</button></li>
+                    <li><button onclick="openModal('faq-modal')" class="hover:text-white transition-colors text-left">FAQ</button></li>
                 </ul>
             </div>
 
@@ -407,6 +292,154 @@
         </div>
     </footer>
 
+    <!-- Info Modals -->
+    
+    <!-- Shipping & Returns Modal -->
+    <div id="shipping-modal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onclick="closeModalOnOverlay(event, 'shipping-modal')">
+        <div class="modal-content glass-dark rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
+            <div class="p-6 border-b border-white/10 flex items-center justify-between sticky top-0 bg-black/90 backdrop-blur-md z-10">
+                <h3 class="font-display text-2xl font-bold">Shipping & Returns</h3>
+                <button onclick="closeModal('shipping-modal')" class="p-2 hover:bg-white/10 rounded-full transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="info-modal p-6 space-y-6">
+                <p class="text-gray-300">All items are made-to-order. This means your product is created specifically for you after you place an order.</p>
+                
+                <div class="space-y-4">
+                    <p class="text-white font-semibold">Because of this, we do not accept returns or exchanges for:</p>
+                    <ul class="list-disc list-inside text-gray-400 space-y-1 ml-4">
+                        <li>Wrong size selected</li>
+                        <li>Wrong color selected</li>
+                        <li>Change of mind</li>
+                    </ul>
+                </div>
+                
+                <div class="space-y-4">
+                    <p class="text-white font-semibold">However, if your item arrives damaged or there is a production error:</p>
+                    <ul class="list-disc list-inside text-gray-400 space-y-1 ml-4">
+                        <li>Contact us within 30 days of delivery</li>
+                        <li>Send a clear photo of the issue</li>
+                        <li>We will offer a free replacement or refund</li>
+                    </ul>
+                    <p class="text-gray-300">No need to return the item.</p>
+                </div>
+                
+                <div class="space-y-2">
+                    <p class="text-white font-semibold">If delivery fails due to incorrect address:</p>
+                    <p class="text-gray-400">You may request a reprint (extra cost) or partial refund</p>
+                </div>
+                
+                <p class="text-sm text-gray-500 italic">Please note: Slight differences in print placement are normal and not considered defects.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Size Guide Modal -->
+    <div id="size-modal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onclick="closeModalOnOverlay(event, 'size-modal')">
+        <div class="modal-content glass-dark rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
+            <div class="p-6 border-b border-white/10 flex items-center justify-between sticky top-0 bg-black/90 backdrop-blur-md z-10">
+                <h3 class="font-display text-2xl font-bold">Size Guide</h3>
+                <button onclick="closeModal('size-modal')" class="p-2 hover:bg-white/10 rounded-full transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="info-modal p-6">
+                <p class="text-gray-300 mb-6">All our clothing is unisex.</p>
+                
+                <p class="text-white font-semibold mb-4">Sizes available: S, M, L, XL</p>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="text-center p-4 bg-white/5 rounded-lg">
+                        <p class="font-bold text-lg">S</p>
+                        <p class="text-sm text-gray-400">Chest: 34-36"</p>
+                    </div>
+                    <div class="text-center p-4 bg-white/5 rounded-lg">
+                        <p class="font-bold text-lg">M</p>
+                        <p class="text-sm text-gray-400">Chest: 38-40"</p>
+                    </div>
+                    <div class="text-center p-4 bg-white/5 rounded-lg">
+                        <p class="font-bold text-lg">L</p>
+                        <p class="text-sm text-gray-400">Chest: 42-44"</p>
+                    </div>
+                    <div class="text-center p-4 bg-white/5 rounded-lg">
+                        <p class="font-bold text-lg">XL</p>
+                        <p class="text-sm text-gray-400">Chest: 46-48"</p>
+                    </div>
+                </div>
+                
+                <p class="text-amber-400 text-sm">Please check your size carefully before ordering. We do not accept returns for size-related issues.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Care Instructions Modal -->
+    <div id="care-modal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onclick="closeModalOnOverlay(event, 'care-modal')">
+        <div class="modal-content glass-dark rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
+            <div class="p-6 border-b border-white/10 flex items-center justify-between sticky top-0 bg-black/90 backdrop-blur-md z-10">
+                <h3 class="font-display text-2xl font-bold">Care Instructions</h3>
+                <button onclick="closeModal('care-modal')" class="p-2 hover:bg-white/10 rounded-full transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="info-modal p-6">
+                <p class="text-gray-300 mb-6">To keep your pieces looking fresh and lasting longer:</p>
+                
+                <ul class="space-y-3 text-gray-400">
+                    <li class="flex items-center gap-3"><span class="w-2 h-2 bg-purple-500 rounded-full"></span>Wash inside-out</li>
+                    <li class="flex items-center gap-3"><span class="w-2 h-2 bg-purple-500 rounded-full"></span>Use cold water</li>
+                    <li class="flex items-center gap-3"><span class="w-2 h-2 bg-purple-500 rounded-full"></span>Do not bleach</li>
+                    <li class="flex items-center gap-3"><span class="w-2 h-2 bg-purple-500 rounded-full"></span>Do not iron directly on the print</li>
+                    <li class="flex items-center gap-3"><span class="w-2 h-2 bg-purple-500 rounded-full"></span>Air dry recommended</li>
+                </ul>
+                
+                <p class="mt-6 text-white font-display italic">Treat it with care — it was made with meaning.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Modal -->
+    <div id="faq-modal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onclick="closeModalOnOverlay(event, 'faq-modal')">
+        <div class="modal-content glass-dark rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
+            <div class="p-6 border-b border-white/10 flex items-center justify-between sticky top-0 bg-black/90 backdrop-blur-md z-10">
+                <h3 class="font-display text-2xl font-bold">FAQ</h3>
+                <button onclick="closeModal('faq-modal')" class="p-2 hover:bg-white/10 rounded-full transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="info-modal p-6 space-y-4">
+                <div class="glass rounded-xl p-6">
+                    <p class="font-semibold text-white mb-2">1. How long does shipping take?</p>
+                    <p class="text-gray-400">Production takes 2–5 business days. Shipping typically takes 5–10 business days depending on your location.</p>
+                </div>
+                <div class="glass rounded-xl p-6">
+                    <p class="font-semibold text-white mb-2">2. How is shipping calculated?</p>
+                    <p class="text-gray-400">Shipping depends on your country and number of items. It is calculated automatically at checkout.</p>
+                </div>
+                <div class="glass rounded-xl p-6">
+                    <p class="font-semibold text-white mb-2">3. Do you ship worldwide?</p>
+                    <p class="text-gray-400">Yes, we ship worldwide.</p>
+                </div>
+                <div class="glass rounded-xl p-6">
+                    <p class="font-semibold text-white mb-2">4. Can I return my item?</p>
+                    <p class="text-gray-400">We do not accept returns for size or preference issues since items are made-to-order.</p>
+                </div>
+                <div class="glass rounded-xl p-6">
+                    <p class="font-semibold text-white mb-2">5. What if my item is damaged?</p>
+                    <p class="text-gray-400">Contact us within 30 days with a photo and we will replace or refund it.</p>
+                </div>
+                <div class="glass rounded-xl p-6">
+                    <p class="font-semibold text-white mb-2">6. Can I customize or personalize a product?</p>
+                    <p class="text-gray-400">Yes. Please contact us at <a href="mailto:glassinkhaven@gmail.com" class="text-purple-400 hover:underline">glassinkhaven@gmail.com</a> and we will assist you.</p>
+                </div>
+                <div class="glass rounded-xl p-6">
+                    <p class="font-semibold text-white mb-2">7. How can I track my order?</p>
+                    <p class="text-gray-400">Once your order is shipped, you will receive a tracking link via email.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Notification -->
     <div id="toast" class="toast fixed bottom-8 left-1/2 -translate-x-1/2 px-6 py-3 bg-white text-black rounded-full font-medium shadow-2xl z-50">Added to cart!</div>
 
@@ -416,6 +449,7 @@
         let cart = [];
         let currentModalProduct = null;
         let selectedSize = null;
+        let currentImageIndex = 0;
 
         // Category mapping for Printify product types
         function determineCategory(product) {
@@ -438,30 +472,42 @@
             return '$' + (cents / 100).toFixed(2);
         }
 
-        // Get price from variants (cents)
+        // Get price from variants (cents) - get lowest enabled variant price
         function getPrice(product) {
             if (product.variants && product.variants.length > 0) {
-                const available = product.variants.filter(v => v.is_enabled !== false);
-                if (available.length > 0) {
-                    const prices = available.map(v => v.price).filter(p => p > 0);
+                const enabledVariants = product.variants.filter(v => v.is_enabled !== false && v.is_available !== false);
+                if (enabledVariants.length > 0) {
+                    const prices = enabledVariants.map(v => v.price || 0).filter(p => p > 0);
                     return prices.length > 0 ? Math.min(...prices) : 0;
                 }
             }
             return product.price || 0;
         }
 
-        // Get sizes from variants
+        // Get sizes from variants - extract size from variant options
         function getSizes(product) {
             if (!product.variants || product.variants.length === 0) return ['One Size'];
             
             const sizes = new Set();
             product.variants.forEach(variant => {
-                if (variant.is_enabled !== false && variant.options) {
-                    Object.entries(variant.options).forEach(([key, value]) => {
-                        if (key.toLowerCase().includes('size') && value) {
-                            sizes.add(value);
+                if (variant.is_enabled !== false && variant.is_available !== false) {
+                    // Check variant title for size (e.g., "Black / M")
+                    const title = variant.title || '';
+                    const parts = title.split('/');
+                    if (parts.length > 1) {
+                        const sizePart = parts[parts.length - 1].trim();
+                        if (sizePart && !sizePart.toLowerCase().includes('default')) {
+                            sizes.add(sizePart);
                         }
-                    });
+                    }
+                    // Check options object
+                    if (variant.options) {
+                        Object.entries(variant.options).forEach(([key, value]) => {
+                            if (key.toLowerCase().includes('size') && value && value !== 'Default') {
+                                sizes.add(value);
+                            }
+                        });
+                    }
                 }
             });
             
@@ -469,12 +515,18 @@
             return sizeArray.length > 0 ? sizeArray : ['One Size'];
         }
 
-        // Get images from product
+        // Get all images from product
         function getImages(product) {
             const images = [];
-            if (product.images && product.images.length > 0) {
+            if (product.images && Array.isArray(product.images)) {
                 product.images.forEach(img => {
-                    if (img.src) images.push(img.src);
+                    if (img && img.src) images.push(img.src);
+                });
+            }
+            // Fallback to mockup images if available
+            if (images.length === 0 && product.mockup_images && Array.isArray(product.mockup_images)) {
+                product.mockup_images.forEach(src => {
+                    if (src) images.push(src);
                 });
             }
             return images.length > 0 ? images : ['https://via.placeholder.com/600x800/1a1a1a/ffffff?text=Glass+Ink+Haven'];
@@ -489,6 +541,7 @@
                 const data = await response.json();
                 console.log('Printify products loaded:', data);
                 
+                // Handle different response structures
                 let rawProducts = [];
                 if (Array.isArray(data)) {
                     rawProducts = data;
@@ -498,6 +551,7 @@
                     rawProducts = data.products;
                 }
                 
+                // Process and enhance products
                 products = rawProducts.map(product => ({
                     ...product,
                     category: determineCategory(product),
@@ -509,6 +563,7 @@
                 
                 renderProducts();
                 
+                // Hide loading, show grid
                 document.getElementById('loading-state').style.display = 'none';
                 document.getElementById('products-grid').style.display = 'grid';
                 
@@ -546,7 +601,7 @@
                     <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-gray-900/50 mb-4 relative">
                         <img src="${product.mainImage}" alt="${product.title}" class="product-image w-full h-full object-cover">
                         <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                            <button class="px-4 py-2 bg-white text-black rounded-full text-sm font-medium transform translate-y-4 group-hover:translate-y-0 transition-colors" onclick="event.stopPropagation(); openProductModal(${product.id})">Quick View</button>
+                            <button class="px-4 py-2 bg-white text-black rounded-full text-sm font-medium transform translate-y-4 group-hover:translate-y-0 transition-all" onclick="event.stopPropagation(); openProductModal(${product.id})">Quick View</button>
                         </div>
                         <div class="absolute top-3 left-3 px-3 py-1 bg-black/60 backdrop-blur-sm rounded-full text-xs font-medium">${product.category}</div>
                     </div>
@@ -580,11 +635,12 @@
 
         // Open product modal
         function openProductModal(productId) {
-            const product = products.find(p => p.id === productId);
+            const product = products.find(p => p.id == productId || p.id === productId);
             if (!product) return;
             
             currentModalProduct = product;
             selectedSize = product.sizes[0] || 'One Size';
+            currentImageIndex = 0;
             
             document.getElementById('modal-title').textContent = product.title;
             document.getElementById('modal-price').textContent = formatPrice(product.displayPrice);
@@ -594,10 +650,11 @@
             mainImage.src = product.allImages[0];
             mainImage.alt = product.title;
             
+            // Render thumbnails
             const thumbnailsContainer = document.getElementById('modal-thumbnails');
             if (product.allImages.length > 1) {
                 thumbnailsContainer.innerHTML = product.allImages.map((img, index) => `
-                    <button class="gallery-thumb w-12 h-12 rounded-lg border-2 border-transparent overflow-hidden ${index === 0 ? 'active' : ''}" onclick="switchModalImage('${img}', this)">
+                    <button class="gallery-thumb w-12 h-12 rounded-lg overflow-hidden ${index === 0 ? 'active' : ''}" onclick="switchModalImage(${index})">
                         <img src="${img}" class="w-full h-full object-cover">
                     </button>
                 `).join('');
@@ -606,14 +663,17 @@
                 thumbnailsContainer.style.display = 'none';
             }
             
+            // Render sizes
             const sizesContainer = document.getElementById('modal-sizes');
             sizesContainer.innerHTML = product.sizes.map((size, index) => `
                 <button class="size-option px-4 py-2 border border-white/20 rounded-lg text-sm font-medium ${index === 0 ? 'selected' : ''}" onclick="selectSize('${size}', this)">${size}</button>
             `).join('');
             
+            // Setup add to cart button
             const addToCartBtn = document.getElementById('modal-add-to-cart');
             addToCartBtn.onclick = () => addToCart(product);
             
+            // Show modal
             document.getElementById('product-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
@@ -623,13 +683,27 @@
             document.getElementById('product-modal').classList.add('hidden');
             document.body.style.overflow = '';
             currentModalProduct = null;
+            currentImageIndex = 0;
         }
 
         // Switch modal image
-        function switchModalImage(src, thumbElement) {
-            document.getElementById('modal-main-image').src = src;
-            document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
-            thumbElement.classList.add('active');
+        function switchModalImage(index) {
+            if (!currentModalProduct) return;
+            currentImageIndex = index;
+            document.getElementById('modal-main-image').src = currentModalProduct.allImages[index];
+            
+            // Update thumbnail active state
+            document.querySelectorAll('.gallery-thumb').forEach((thumb, i) => {
+                if (i === index) thumb.classList.add('active');
+                else thumb.classList.remove('active');
+            });
+        }
+
+        // Next image (click on main image)
+        function nextImage() {
+            if (!currentModalProduct || currentModalProduct.allImages.length <= 1) return;
+            const nextIndex = (currentImageIndex + 1) % currentModalProduct.allImages.length;
+            switchModalImage(nextIndex);
         }
 
         // Select size
@@ -654,6 +728,7 @@
                 quantity: 1
             };
             
+            // Check if item already exists
             const existingIndex = cart.findIndex(item => item.id === cartItem.id);
             if (existingIndex >= 0) {
                 cart[existingIndex].quantity++;
@@ -664,6 +739,7 @@
             updateCart();
             showToast('Added to cart!');
             
+            // Close modal if open
             if (!document.getElementById('product-modal').classList.contains('hidden')) {
                 closeProductModal();
             }
@@ -708,6 +784,7 @@
                 `).join('');
             }
             
+            // Calculate totals
             const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             cartSubtotal.textContent = formatPrice(subtotal);
             cartTotal.textContent = formatPrice(subtotal);
@@ -754,6 +831,7 @@
                 return;
             }
             showToast('Redirecting to checkout...');
+            // Implement actual checkout logic here
         }
 
         // Show toast
@@ -762,6 +840,29 @@
             toast.textContent = message;
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Info Modal Functions
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function closeModalOnOverlay(event, modalId) {
+            if (event.target === event.currentTarget) {
+                closeModal(modalId);
+            }
         }
 
         // Scroll functions
@@ -798,6 +899,12 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeProductModal();
+                
+                // Close info modals
+                ['shipping-modal', 'size-modal', 'care-modal', 'faq-modal'].forEach(id => {
+                    closeModal(id);
+                });
+                
                 const sidebar = document.getElementById('cart-sidebar');
                 if (sidebar.classList.contains('open')) toggleCart();
             }
@@ -805,4 +912,3 @@
     </script>
 </body>
 </html>
-w
