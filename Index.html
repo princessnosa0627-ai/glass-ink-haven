@@ -21,7 +21,6 @@
         @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
         .float { animation: float 6s ease-in-out infinite; }
-        .glow { box-shadow: 0 0 40px rgba(102, 126, 234, 0.3); }
         .product-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .product-card:hover { transform: translateY(-8px); }
         .product-card:hover .product-image { transform: scale(1.05); }
@@ -41,14 +40,10 @@
         .size-option.selected { background: #667eea; border-color: #667eea; color: white; }
         .toast { transform: translateY(100px); opacity: 0; transition: all 0.3s ease; }
         .toast.show { transform: translateY(0); opacity: 1; }
-        
-        /* Modal Styles */
         .modal-overlay { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal-content { transform: scale(0.9) translateY(20px); transition: all 0.3s ease; }
         .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
-        
-        /* Info Modal Specific */
         .info-modal { max-height: 80vh; overflow-y: auto; }
         .info-modal::-webkit-scrollbar { width: 6px; }
         .info-modal::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
@@ -83,7 +78,7 @@
         </div>
         <div class="relative z-10 w-full px-6 lg:px-12 text-center">
             <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight">Therapy You<br><span class="gradient-text italic">Can Wear</span></h1>
-            <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 font-light">For the ones who feel deeply. Clothing that carries your healing, your story, your strength. Made for the silent fighters and quiet rebuilders.</p>
+            <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 font-light">For the ones who feel deeply. Clothing that carries your healing, your story, your strength.</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="#shop" class="magnetic-btn px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-all">Find Your Piece</a>
                 <button onclick="scrollToAbout()" class="magnetic-btn px-8 py-4 glass rounded-full font-medium hover:bg-white/10 transition-all">Read Our Story</button>
@@ -123,6 +118,12 @@
         <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" style="display: none;"></div>
         <div id="empty-state" class="hidden text-center py-20">
             <p class="text-gray-500 text-lg">No products found in this category.</p>
+        </div>
+        <!-- Error State -->
+        <div id="error-state" class="hidden text-center py-20">
+            <p class="text-red-400 text-lg mb-4">Unable to load products.</p>
+            <p class="text-gray-500 text-sm mb-4" id="error-message"></p>
+            <button onclick="fetchProducts()" class="px-6 py-2 border border-white/20 rounded-full hover:bg-white/10 transition-colors">Retry</button>
         </div>
     </section>
 
@@ -178,7 +179,7 @@
         </div>
     </div>
 
-    <!-- About Section - NO IMAGE -->
+    <!-- About Section -->
     <section id="about" class="w-full px-6 lg:px-12 py-24 relative overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/10 to-transparent"></div>
         <div class="relative z-10 max-w-4xl mx-auto text-center">
@@ -534,9 +535,40 @@
 
         // Fetch products from Printify endpoint
         async function fetchProducts() {
+            const loadingState = document.getElementById('loading-state');
+            const productsGrid = document.getElementById('products-grid');
+            const errorState = document.getElementById('error-state');
+            const errorMessage = document.getElementById('error-message');
+            
+            // Reset states
+            loadingState.style.display = 'grid';
+            productsGrid.style.display = 'none';
+            errorState.classList.add('hidden');
+            
             try {
-                const response = await fetch('https://glassinkhaven.netlify.app/.netlify/functions/printify');
-                if (!response.ok) throw new Error('Failed to fetch products');
+                console.log('Fetching products from Printify...');
+                
+                const response = await fetch('https://glassinkhaven.netlify.app/.netlify/functions/printify', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                });
+                
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers.get('content-type'));
+                
+                // Check if response is JSON
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    const text = await response.text();
+                    console.error('Non-JSON response:', text.substring(0, 500));
+                    throw new Error('Server returned non-JSON response. Check Netlify function logs.');
+                }
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 
                 const data = await response.json();
                 console.log('Printify products loaded:', data);
@@ -549,6 +581,13 @@
                     rawProducts = data.data;
                 } else if (data.products && Array.isArray(data.products)) {
                     rawProducts = data.products;
+                } else {
+                    console.warn('Unexpected data structure:', data);
+                    throw new Error('Unexpected data structure from API');
+                }
+                
+                if (rawProducts.length === 0) {
+                    throw new Error('No products found in API response');
                 }
                 
                 // Process and enhance products
@@ -561,20 +600,19 @@
                     mainImage: getImages(product)[0]
                 }));
                 
+                console.log('Processed products:', products);
+                
                 renderProducts();
                 
                 // Hide loading, show grid
-                document.getElementById('loading-state').style.display = 'none';
-                document.getElementById('products-grid').style.display = 'grid';
+                loadingState.style.display = 'none';
+                productsGrid.style.display = 'grid';
                 
             } catch (error) {
                 console.error('Error fetching Printify products:', error);
-                document.getElementById('loading-state').innerHTML = `
-                    <div class="col-span-full text-center py-12">
-                        <p class="text-red-400 mb-4">Failed to load products. Please try again later.</p>
-                        <button onclick="fetchProducts()" class="px-6 py-2 border border-white/20 rounded-full hover:bg-white/10 transition-colors">Retry</button>
-                    </div>
-                `;
+                loadingState.style.display = 'none';
+                errorState.classList.remove('hidden');
+                errorMessage.textContent = error.message;
             }
         }
 
@@ -599,7 +637,7 @@
             grid.innerHTML = filtered.map((product, index) => `
                 <div class="product-card group cursor-pointer animate-in" style="animation-delay: ${index * 0.05}s" onclick="openProductModal(${product.id})">
                     <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-gray-900/50 mb-4 relative">
-                        <img src="${product.mainImage}" alt="${product.title}" class="product-image w-full h-full object-cover">
+                        <img src="${product.mainImage}" alt="${product.title}" class="product-image w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/600x800/1a1a1a/ffffff?text=Glass+Ink+Haven'">
                         <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                             <button class="px-4 py-2 bg-white text-black rounded-full text-sm font-medium transform translate-y-4 group-hover:translate-y-0 transition-all" onclick="event.stopPropagation(); openProductModal(${product.id})">Quick View</button>
                         </div>
@@ -636,7 +674,10 @@
         // Open product modal
         function openProductModal(productId) {
             const product = products.find(p => p.id == productId || p.id === productId);
-            if (!product) return;
+            if (!product) {
+                console.error('Product not found:', productId);
+                return;
+            }
             
             currentModalProduct = product;
             selectedSize = product.sizes[0] || 'One Size';
@@ -655,7 +696,7 @@
             if (product.allImages.length > 1) {
                 thumbnailsContainer.innerHTML = product.allImages.map((img, index) => `
                     <button class="gallery-thumb w-12 h-12 rounded-lg overflow-hidden ${index === 0 ? 'active' : ''}" onclick="switchModalImage(${index})">
-                        <img src="${img}" class="w-full h-full object-cover">
+                        <img src="${img}" class="w-full h-full object-cover" onerror="this.style.display='none'">
                     </button>
                 `).join('');
                 thumbnailsContainer.style.display = 'flex';
@@ -764,7 +805,7 @@
                 cartEmpty.style.display = 'none';
                 cartItems.innerHTML = cart.map(item => `
                     <div class="flex gap-4 p-4 glass rounded-xl">
-                        <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg bg-gray-800">
+                        <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg bg-gray-800" onerror="this.src='https://via.placeholder.com/100x100/1a1a1a/ffffff?text=Product'">
                         <div class="flex-1 min-w-0">
                             <h4 class="font-medium truncate">${item.name}</h4>
                             <p class="text-sm text-gray-400">${item.size}</p>
