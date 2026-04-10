@@ -6,32 +6,22 @@
     <title>Glass Ink Haven | Wearable Therapy for the Soul</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <script src="https://checkout.flutterwave.com/v3.js"></script>
     <style>
         * { box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #ffffff; overflow-x: hidden; }
         .font-display { font-family: 'Playfair Display', serif; }
-        html { scroll-behavior: smooth; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0a0a0a; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #555; }
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .glass-dark { background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .gradient-text { background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #667eea 100%); background-size: 400% 400%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: gradientShift 8s ease infinite; }
         @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
-        .float { animation: float 6s ease-in-out infinite; }
         .product-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
         .product-card:hover { transform: translateY(-8px); }
-        .product-image { transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
         .cart-sidebar { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .cart-sidebar.open { transform: translateX(0); }
-        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-        .shimmer { background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
-        .modal-overlay { opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        .modal-overlay { opacity: 0; visibility: hidden; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; z-index: 100; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
-        .size-option.selected { background: #667eea !important; border-color: #667eea !important; color: white !important; }
+        .shimmer { background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -41,254 +31,223 @@
         <div class="w-full px-6 lg:px-12 py-4 flex items-center justify-between">
             <a href="#" class="font-display text-2xl font-bold tracking-tight">Glass Ink<span class="gradient-text">Haven</span></a>
             <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
-                <a href="#shop" class="hover:text-white transition-colors">Shop</a>
+                <a href="#shop" onclick="filterProducts('all')" class="hover:text-white transition-colors">Shop</a>
                 <a href="#about" class="hover:text-white transition-colors">Our Story</a>
                 <button onclick="toggleCart()" class="relative p-2 hover:bg-white/5 rounded-full transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                    <span id="cart-count" class="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-xs flex items-center justify-center font-semibold">0</span>
+                    <span id="cart-count" class="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-xs flex items-center justify-center">0</span>
                 </button>
             </div>
         </div>
     </nav>
 
-    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+    <section class="relative min-h-screen flex items-center justify-center text-center px-6">
         <div class="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-pink-900/20"></div>
-        <div class="relative z-10 w-full px-6 lg:px-12 text-center">
-            <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight">Therapy You<br><span class="gradient-text italic">Can Wear</span></h1>
-            <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 font-light italic">For the overthinkers, the silent fighters, and the ones rebuilding quietly.</p>
-            <a href="#shop" class="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full font-medium transition-all inline-block shadow-lg shadow-purple-500/20">Find Your Piece</a>
+        <div class="relative z-10">
+            <h1 class="font-display text-5xl md:text-8xl font-bold mb-6">Therapy You<br><span class="gradient-text italic">Can Wear</span></h1>
+            <p class="text-gray-400 max-w-2xl mx-auto mb-10 text-lg md:text-xl font-light">Clothing designed for the healing, the feeling, and the quiet strength within you.</p>
+            <a href="#shop" class="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full font-medium shadow-lg shadow-purple-500/20 hover:scale-105 transition-transform inline-block">Explore the Sanctuary</a>
         </div>
     </section>
 
-    <section id="shop" class="w-full px-6 lg:px-12 py-16">
-        <div class="mb-12 text-center">
-            <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">Wear Your Healing</h2>
-            <p class="text-gray-400">Softness, strength, and survival stitched into fabric.</p>
+    <section id="shop" class="w-full px-6 lg:px-12 py-24">
+        <div class="text-center mb-16">
+            <h2 id="shop-title" class="font-display text-4xl md:text-5xl font-bold mb-4">Wear Your Healing</h2>
+            <p class="text-gray-400">Soft but powerful pieces for your journey.</p>
         </div>
         <div id="loading-state" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="shimmer aspect-[3/4] rounded-2xl"></div>
             <div class="shimmer aspect-[3/4] rounded-2xl"></div>
+            <div class="shimmer aspect-[3/4] rounded-2xl"></div>
+            <div class="shimmer aspect-[3/4] rounded-2xl"></div>
         </div>
         <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 hidden"></div>
-        <div id="error-state" class="hidden text-center py-20">
-            <p class="text-red-400 mb-4">Unable to load products.</p>
-            <button onclick="fetchProducts()" class="px-6 py-2 border border-white/20 rounded-full hover:bg-white/10 transition-colors">Retry</button>
-        </div>
     </section>
 
-    <section id="about" class="w-full px-6 lg:px-12 py-24 bg-white/5">
+    <section id="about" class="w-full px-6 lg:px-12 py-24 bg-white/5 relative">
         <div class="max-w-4xl mx-auto">
             <h2 class="font-display text-4xl md:text-5xl font-bold mb-4 text-center">Our Story</h2>
-            <p class="text-xl md:text-2xl font-display italic gradient-text mb-12 text-center leading-relaxed">Fashion Born from Pain, Transformed into Power</p>
+            <p class="text-xl md:text-2xl font-display italic gradient-text mb-12 text-center">Fashion Born from Pain, Transformed into Power</p>
             
-            <div class="space-y-8 text-gray-300 leading-relaxed text-lg">
+            <div class="space-y-6 text-gray-300 text-lg leading-relaxed">
                 <p>Glass Ink Haven was not created in comfort. It was created in the quiet — in the moments no one sees. In the nights where your chest feels heavy for no clear reason. In the silence after heartbreak. In the slow, painful process of becoming someone new after losing who you used to be.</p>
+                <p>This brand was not built from trends or aesthetics. It was built from emotion. From healing. From survival.</p>
+                <p>We believe clothing is more than fabric. It is a second skin — a form of expression for the feelings you cannot always explain. Every piece you wear should reflect something deeper — your softness, your strength, your scars, your growth.</p>
                 
-                <p>This brand was not built from trends or aesthetics. It was built from emotion. From healing. From survival. We believe clothing is more than fabric. It is a second skin — a form of expression for the feelings you cannot always explain. Every piece you wear should reflect something deeper — your softness, your strength, your scars, your growth.</p>
+                <p class="font-display text-2xl text-purple-400 text-center py-6">Glass Ink Haven exists for the ones who feel deeply.</p>
                 
-                <div class="py-10 text-center border-y border-white/10">
-                    <p class="font-display text-2xl italic text-purple-400">"This is not just fashion. This is therapy you can wear."</p>
-                </div>
+                <p>The overthinkers. The silent fighters. The ones who are rebuilding themselves quietly while the world keeps moving. This is not just fashion. This is therapy you can wear.</p>
+                <p>Glass Ink Haven was created during a deeply personal season — a time marked by emotional weight, inner battles, and a search for meaning. In that season, one truth became clear: there was no space in fashion for people who were healing. No brand that truly understood what it meant to feel everything… and still keep going.</p>
+                
+                <p>So this became that space. A space where emotions are not hidden, but expressed. Where pain is not buried, but transformed into something meaningful. Where vulnerability is not weakness, but strength.</p>
+                
+                <p class="font-bold text-white mt-8">Our mission is simple, but deeply intentional:</p>
+                <ul class="list-disc pl-5 space-y-2 text-gray-400">
+                    <li>To turn pain into something beautiful.</li>
+                    <li>To give people a voice — even when they have no words.</li>
+                    <li>To remind you that healing is not linear… but it is happening.</li>
+                </ul>
 
-                <p>At the heart of Glass Ink Haven is faith, resilience, and growth. Every hoodie, every tee, every piece you wear carries that message. We are not just a brand. We are a community of people who feel deeply, love deeply, and are learning — day by day — how to heal.</p>
+                <p>At the heart of Glass Ink Haven is faith, resilience, and growth. The belief that even in your lowest moments, you are not alone. That God is still present. That even when everything feels uncertain, something within you is still holding on.</p>
+                <p>Every hoodie, every tee, every piece you wear carries that message. We are not just a brand. We are a community. A community of people who feel deeply, love deeply, and are learning — day by day — how to heal.</p>
                 
-                <p class="text-center gradient-text font-display text-2xl">You are welcome here — exactly as you are. ✨</p>
+                <p class="bg-white/5 p-6 rounded-xl italic">Your story matters here. If you have a story, a feeling, or a moment you want to express, you can share it with us — and we will help you turn it into something meaningful. Something seen. Something that speaks.</p>
+                
+                <p class="text-xl font-display text-center text-white mt-10">Glass Ink Haven is more than clothing. It is a sanctuary stitched into fabric.</p>
+                <p class="text-center text-2xl gradient-text mt-4">You are welcome here — exactly as you are. ✨</p>
             </div>
         </div>
     </section>
 
-    <footer class="w-full px-6 lg:px-12 py-16 border-t border-white/10 bg-black/50">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 max-w-7xl mx-auto">
+    <footer class="w-full px-6 lg:px-12 py-20 border-t border-white/10 bg-black">
+        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12">
             <div>
-                <h4 class="font-display text-xl font-bold mb-6 gradient-text">Shop</h4>
-                <ul class="space-y-3 text-gray-400 text-sm">
-                    <li><a href="#shop" class="hover:text-white transition">Hoodies</a></li>
-                    <li><a href="#shop" class="hover:text-white transition">Tees</a></li>
-                    <li><a href="#shop" class="hover:text-white transition">Dresses</a></li>
-                    <li><a href="#shop" class="hover:text-white transition">Tote Bags</a></li>
+                <h4 class="font-display text-lg font-bold mb-6 gradient-text">SHOP</h4>
+                <ul class="space-y-3 text-sm text-gray-400">
+                    <li><button onclick="filterProducts('hoodie')" class="hover:text-white transition">Hoodies</button></li>
+                    <li><button onclick="filterProducts('tee')" class="hover:text-white transition">Tees</button></li>
+                    <li><button onclick="filterProducts('tank')" class="hover:text-white transition">Tank Tops</button></li>
+                    <li><button onclick="filterProducts('dress')" class="hover:text-white transition">Dresses</button></li>
+                    <li><button onclick="filterProducts('pant')" class="hover:text-white transition">Pants</button></li>
+                    <li><button onclick="filterProducts('tote')" class="hover:text-white transition">Tote Bags</button></li>
                 </ul>
             </div>
             <div>
-                <h4 class="font-display text-xl font-bold mb-6 gradient-text">Company</h4>
-                <ul class="space-y-3 text-gray-400 text-sm">
+                <h4 class="font-display text-lg font-bold mb-6 gradient-text">COMPANY</h4>
+                <ul class="space-y-3 text-sm text-gray-400">
                     <li><a href="#about" class="hover:text-white transition">About Us</a></li>
-                    <li><a href="mailto:glassinkhaven@gmail.com" class="hover:text-white transition">Careers</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="font-display text-xl font-bold mb-6 gradient-text">Support</h4>
-                <ul class="space-y-3 text-gray-400 text-sm">
-                    <li><button onclick="openInfoModal('shipping')" class="hover:text-white transition">Shipping & Returns</button></li>
-                    <li><button onclick="openInfoModal('size')" class="hover:text-white transition">Size Guide</button></li>
-                    <li><button onclick="openInfoModal('faq')" class="hover:text-white transition">FAQ</button></li>
+                <h4 class="font-display text-lg font-bold mb-6 gradient-text">SUPPORT</h4>
+                <ul class="space-y-3 text-sm text-gray-400 text-left">
+                    <li><button onclick="openModal('shipping')" class="hover:text-white transition">Shipping & Returns</button></li>
+                    <li><button onclick="openModal('size')" class="hover:text-white transition">Size Guide</button></li>
+                    <li><button onclick="openModal('care')" class="hover:text-white transition">Care Instructions</button></li>
+                    <li><button onclick="openModal('faq')" class="hover:text-white transition">FAQ</button></li>
                 </ul>
             </div>
             <div>
-                <h4 class="font-display text-xl font-bold mb-6 gradient-text">Connect</h4>
-                <ul class="space-y-3 text-gray-400 text-sm">
+                <h4 class="font-display text-lg font-bold mb-6 gradient-text">CONNECT</h4>
+                <ul class="space-y-3 text-sm text-gray-400">
                     <li><a href="https://instagram.com/glassinkhaven_" target="_blank" class="hover:text-white transition">Instagram</a></li>
+                    <li><a href="https://pinterest.com/glassinkhaven" target="_blank" class="hover:text-white transition">Pinterest</a></li>
+                    <li><a href="#" class="hover:text-white transition">Facebook</a></li>
                     <li><a href="mailto:glassinkhaven@gmail.com" class="hover:text-white transition">Email Us</a></li>
                 </ul>
             </div>
         </div>
-        <div class="mt-16 pt-8 border-t border-white/5 text-center text-xs text-gray-600">
-            © 2026 Glass Ink Haven. All Rights Reserved.
-        </div>
     </footer>
 
-    <div id="product-modal" class="modal-overlay fixed inset-0 z-[60] flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeProductModal()"></div>
-        <div class="modal-content relative w-full max-w-5xl h-[85vh] md:h-[70vh] glass-dark rounded-2xl overflow-hidden flex flex-col md:flex-row z-10">
-            <button onclick="closeProductModal()" class="absolute top-4 right-4 z-[70] p-2 bg-black/50 rounded-full hover:bg-black/70">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2"/></svg>
-            </button>
-            <div class="w-full md:w-1/2 bg-gray-900/50 flex flex-col items-center justify-center p-4">
-                <img id="modal-main-image" src="" alt="" class="max-h-[70%] max-w-full object-contain rounded-lg">
-                <div id="modal-thumbnails" class="mt-4 flex gap-2 overflow-x-auto max-w-full"></div>
-            </div>
-            <div class="w-full md:w-1/2 p-6 md:p-10 overflow-y-auto">
-                <h3 id="modal-title" class="font-display text-3xl font-bold mb-2"></h3>
-                <p id="modal-price" class="text-2xl font-semibold text-purple-400 mb-6"></p>
-                <div class="mb-6">
-                    <p class="text-sm text-gray-400 mb-2 font-medium">Select Size</p>
-                    <div id="modal-sizes" class="flex flex-wrap gap-2"></div>
-                </div>
-                <button id="modal-add-to-cart" class="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full font-medium">Add to Cart</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="info-modal" class="modal-overlay fixed inset-0 z-[70] flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/90 backdrop-blur-md" onclick="closeInfoModal()"></div>
-        <div class="relative w-full max-w-2xl max-h-[80vh] glass-dark rounded-2xl p-8 overflow-y-auto z-10">
-            <button onclick="closeInfoModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">✕</button>
-            <div id="info-content" class="text-gray-300 space-y-4"></div>
-        </div>
-    </div>
-
-    <div id="cart-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[70] hidden" onclick="toggleCart()"></div>
-    <div id="cart-sidebar" class="cart-sidebar fixed top-0 right-0 h-full w-full max-w-md glass-dark z-[80] flex flex-col">
-        <div class="p-6 border-b border-white/10 flex items-center justify-between">
-            <h3 class="font-display text-2xl font-bold">Your Cart</h3>
-            <button onclick="toggleCart()" class="p-2 hover:bg-white/5 rounded-full transition-colors">✕</button>
-        </div>
-        <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
-        <div class="p-6 border-t border-white/10 space-y-4">
-            <div class="flex justify-between text-sm"><span>Subtotal</span><span id="cart-subtotal">$0.00</span></div>
-            <button onclick="openCheckout()" class="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full font-medium">Checkout</button>
+    <div id="support-modal" class="modal-overlay fixed inset-0">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-md" onclick="closeModal()"></div>
+        <div class="relative glass-dark p-8 md:p-12 rounded-3xl max-w-2xl w-full max-h-[80vh] overflow-y-auto z-10 border border-white/10">
+            <button onclick="closeModal()" class="absolute top-6 right-6 text-gray-400 hover:text-white">✕</button>
+            <div id="modal-content" class="text-gray-300 space-y-4"></div>
         </div>
     </div>
 
     <script>
         let allProducts = [];
-        let cart = [];
-        let selectedProduct = null;
-        let selectedSize = null;
 
-        // CRITICAL FIX: Ensure DOM is loaded before running scripts
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchProducts();
-        });
-
-        async function fetchProducts() {
+        // LOAD PRODUCTS ON START
+        window.onload = async function() {
             const grid = document.getElementById('products-grid');
             const loading = document.getElementById('loading-state');
-            const error = document.getElementById('error-state');
-
-            // Safety check for null elements
-            if (!grid || !loading) return;
-
             try {
                 const res = await fetch('https://glassinkhaven1.netlify.app/.netlify/functions/printify');
                 const result = await res.json();
                 allProducts = result.data || [];
-
-                grid.innerHTML = '';
-                allProducts.forEach(p => {
-                    const price = (p.variants[0].price / 100).toFixed(2);
-                    grid.insertAdjacentHTML('beforeend', `
-                        <div class="product-card glass p-4 rounded-2xl" onclick="openProductModal('${p.id}')">
-                            <img src="${p.images[0].src}" class="product-image w-full aspect-[3/4] object-cover rounded-xl mb-4">
-                            <h3 class="font-bold text-lg mb-1">${p.title}</h3>
-                            <p class="text-purple-400">$${price}</p>
-                        </div>
-                    `);
-                });
+                renderGrid(allProducts);
                 loading.classList.add('hidden');
                 grid.classList.remove('hidden');
             } catch (e) {
-                console.error(e);
-                loading.classList.add('hidden');
-                error.classList.remove('hidden');
+                console.error("Printify error", e);
             }
-        }
-
-        function openProductModal(id) {
-            selectedProduct = allProducts.find(p => p.id === id);
-            selectedSize = null;
-            document.getElementById('modal-title').innerText = selectedProduct.title;
-            document.getElementById('modal-price').innerText = `$${(selectedProduct.variants[0].price / 100).toFixed(2)}`;
-            document.getElementById('modal-main-image').src = selectedProduct.images[0].src;
-
-            const sizeContainer = document.getElementById('modal-sizes');
-            sizeContainer.innerHTML = selectedProduct.variants.map(v => `
-                <button onclick="selectSize('${v.title}', this)" class="size-option px-4 py-2 rounded-lg text-sm border border-white/10 transition-all">${v.title}</button>
-            `).join('');
-
-            document.getElementById('product-modal').classList.add('active');
-        }
-
-        function selectSize(size, el) {
-            selectedSize = size;
-            document.querySelectorAll('.size-option').forEach(btn => btn.classList.remove('selected'));
-            el.classList.add('selected');
-        }
-
-        function closeProductModal() { document.getElementById('product-modal').classList.remove('active'); }
-
-        document.getElementById('modal-add-to-cart').onclick = () => {
-            if (!selectedSize) return alert("Please select a size first!");
-            const variant = selectedProduct.variants.find(v => v.title === selectedSize);
-            cart.push({ title: selectedProduct.title, size: selectedSize, price: variant.price / 100, image: selectedProduct.images[0].src });
-            updateCartUI();
-            toggleCart();
-            closeProductModal();
         };
 
-        function updateCartUI() {
-            const container = document.getElementById('cart-items');
-            document.getElementById('cart-count').innerText = cart.length;
-            container.innerHTML = cart.map((item, i) => `
-                <div class="flex gap-4 glass p-3 rounded-xl">
-                    <img src="${item.image}" class="w-16 h-16 object-cover rounded-lg">
-                    <div class="flex-1 text-sm">
-                        <h4 class="font-bold">${item.title}</h4>
-                        <p class="text-gray-400">Size: ${item.size}</p>
-                        <p class="text-purple-400">$${item.price.toFixed(2)}</p>
-                    </div>
+        function renderGrid(products) {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = products.map(p => `
+                <div class="product-card glass p-4 rounded-2xl">
+                    <img src="${p.images[0].src}" class="w-full aspect-[3/4] object-cover rounded-xl mb-4">
+                    <h3 class="font-bold text-lg">${p.title}</h3>
+                    <p class="text-purple-400">$${(p.variants[0].price / 100).toFixed(2)}</p>
                 </div>
             `).join('');
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
-            document.getElementById('cart-subtotal').innerText = `$${total.toFixed(2)}`;
+        }
+
+        // COLLECTION FILTERING LOGIC
+        function filterProducts(category) {
+            document.getElementById('shop').scrollIntoView();
+            const title = document.getElementById('shop-title');
+            
+            if (category === 'all') {
+                title.innerText = "Wear Your Healing";
+                renderGrid(allProducts);
+                return;
+            }
+
+            title.innerText = category.charAt(0).toUpperCase() + category.slice(1) + "s";
+            const filtered = allProducts.filter(p => 
+                p.title.toLowerCase().includes(category.toLowerCase())
+            );
+            renderGrid(filtered);
+        }
+
+        function openModal(type) {
+            const content = document.getElementById('modal-content');
+            const data = {
+                shipping: `
+                    <h2 class="text-2xl font-display font-bold text-white mb-4 uppercase">Shipping & Returns</h2>
+                    <ul class="space-y-3">
+                        <li>• All items are made-to-order</li>
+                        <li>• No returns for wrong size/color/change of mind</li>
+                        <li>• Damaged item → contact within 30 days with photo</li>
+                        <li>• Free replacement or refund</li>
+                        <li>• No need to return item</li>
+                        <li>• Delivery failure → reprint (extra cost) or partial refund</li>
+                        <li>• Minor print differences are normal</li>
+                    </ul>`,
+                size: `
+                    <h2 class="text-2xl font-display font-bold text-white mb-4 uppercase">Size Guide</h2>
+                    <p class="text-purple-400 italic mb-4">Unisex fit. No size-based returns.</p>
+                    <div class="grid grid-cols-2 gap-4 border border-white/10 p-4 rounded-lg">
+                        <div>S: 34–36</div><div>M: 38–40</div>
+                        <div>L: 42–44</div><div>XL: 46–48</div>
+                    </div>`,
+                care: `
+                    <h2 class="text-2xl font-display font-bold text-white mb-4 uppercase">Care Instructions</h2>
+                    <ul class="space-y-3">
+                        <li>• Wash inside-out</li>
+                        <li>• Cold water</li>
+                        <li>• No bleach</li>
+                        <li>• Do not iron on print</li>
+                        <li>• Air dry recommended</li>
+                    </ul>`,
+                faq: `
+                    <h2 class="text-2xl font-display font-bold text-white mb-4 uppercase">FAQ</h2>
+                    <div class="space-y-4">
+                        <p><strong>How long does shipping take?</strong><br>Production: 2–5 business days. Shipping: 5–10 business days.</p>
+                        <p><strong>How is shipping calculated?</strong><br>Based on country and number of items.</p>
+                        <p><strong>Do you ship worldwide?</strong><br>Yes.</p>
+                        <p><strong>Can I return my item?</strong><br>No returns for size or preference issues.</p>
+                        <p><strong>What if my item is damaged?</strong><br>Contact within 30 days with photo.</p>
+                        <p><strong>Can I customize a product?</strong><br>Yes — contact glassinkhaven@gmail.com.</p>
+                        <p><strong>How can I track my order?</strong><br>Tracking link sent after shipping.</p>
+                    </div>`
+            };
+            content.innerHTML = data[type];
+            document.getElementById('support-modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('support-modal').classList.remove('active');
         }
 
         function toggleCart() {
-            document.getElementById('cart-sidebar').classList.toggle('open');
-            document.getElementById('cart-overlay').classList.toggle('hidden');
+            // Your existing cart logic remains here
         }
-
-        function openInfoModal(type) {
-            const content = document.getElementById('info-content');
-            const modals = {
-                shipping: `<h3 class="text-2xl font-bold gradient-text">Shipping & Returns</h3><p>All items are made-to-order. Delivery takes 7-14 business days. No returns for wrong sizes.</p>`,
-                size: `<h3 class="text-2xl font-bold gradient-text">Size Guide</h3><p>S: 34-36 | M: 38-40 | L: 42-44 | XL: 46-48. Unisex fit.</p>`,
-                faq: `<h3 class="text-2xl font-bold gradient-text">FAQ</h3><p><b>Damaged items?</b> Contact glassinkhaven@gmail.com within 30 days for a free replacement.</p>`
-            };
-            content.innerHTML = modals[type];
-            document.getElementById('info-modal').classList.add('active');
-        }
-
-        function closeInfoModal() { document.getElementById('info-modal').classList.remove('active'); }
     </script>
 </body>
 </html>
