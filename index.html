@@ -28,30 +28,34 @@
             100% { background-position: 0% 50%; }
         }
         
-        /* ENHANCED PARTICLES */
+        /* ENHANCED VISIBLE PARTICLES - MORE AND BRIGHTER */
         .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
         .particle { 
             position: absolute; 
-            width: 2px; 
-            height: 2px; 
-            background: rgba(236, 72, 153, 0.6); 
+            width: 4px; 
+            height: 4px; 
+            background: rgba(236, 72, 153, 0.9); 
             border-radius: 50%; 
-            box-shadow: 0 0 6px rgba(236, 72, 153, 0.8), 0 0 12px rgba(139, 92, 246, 0.4); 
-            animation: float 25s infinite ease-in-out; 
+            box-shadow: 0 0 15px rgba(236, 72, 153, 1), 0 0 30px rgba(139, 92, 246, 0.8), 0 0 45px rgba(236, 72, 153, 0.6); 
+            animation: float 20s infinite ease-in-out; 
         }
         .particle:nth-child(3n) {
-            background: rgba(139, 92, 246, 0.5);
-            box-shadow: 0 0 6px rgba(139, 92, 246, 0.8), 0 0 12px rgba(236, 72, 153, 0.3);
+            background: rgba(139, 92, 246, 0.9);
+            box-shadow: 0 0 15px rgba(139, 92, 246, 1), 0 0 30px rgba(236, 72, 153, 0.8), 0 0 45px rgba(139, 92, 246, 0.6);
         }
         .particle:nth-child(5n) {
-            background: rgba(239, 68, 68, 0.4);
-            box-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+            background: rgba(239, 68, 68, 0.9);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 1), 0 0 30px rgba(236, 72, 153, 0.8);
+        }
+        .particle:nth-child(7n) {
+            background: rgba(167, 139, 250, 0.9);
+            box-shadow: 0 0 15px rgba(167, 139, 250, 1), 0 0 30px rgba(236, 72, 153, 0.8);
         }
         @keyframes float { 
             0%, 100% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; } 
-            5% { opacity: 0.8; } 
-            95% { opacity: 0.8; } 
-            100% { transform: translateY(-100vh) translateX(50px) rotate(360deg); opacity: 0; } 
+            10% { opacity: 1; } 
+            90% { opacity: 1; } 
+            100% { transform: translateY(-100vh) translateX(100px) rotate(720deg); opacity: 0; } 
         }
 
         .cart-sidebar { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000; }
@@ -66,7 +70,7 @@
         .product-card img { transition: transform 0.5s ease, opacity 0.3s ease; }
         .product-card:hover img { transform: scale(1.03); }
 
-        .sparkle { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; animation: sparkle 3s infinite ease-in-out; }
+        .sparkle { position: absolute; width: 3px; height: 3px; background: white; border-radius: 50%; animation: sparkle 2s infinite ease-in-out; box-shadow: 0 0 10px white; }
         @keyframes sparkle { 0%, 100% { opacity: 0; transform: scale(0); } 50% { opacity: 1; transform: scale(1); } }
 
         .variant-btn { transition: all 0.2s ease; }
@@ -293,15 +297,12 @@
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-12">
                 <h2 class="font-display text-4xl font-bold mb-6">Wear Your Healing</h2>
+                <!-- ONLY 3 CATEGORIES: T-shirts, Hoodies, Tote bags -->
                 <div class="filters flex flex-wrap justify-center gap-2">
                     <button onclick="filterCategory('all', this)" class="filter-btn active px-5 py-2 rounded-full glass text-sm hover:scale-105 transition">All</button>
+                    <button onclick="filterCategory('shirt', this)" class="filter-btn px-5 py-2 rounded-full glass text-sm hover:scale-105 transition">T-shirts</button>
                     <button onclick="filterCategory('hoodie', this)" class="filter-btn px-5 py-2 rounded-full glass text-sm hover:scale-105 transition">Hoodies</button>
-                    <button onclick="filterCategory('shirt', this)" class="filter-btn px-5 py-2 rounded-full glass text-sm hover:scale-105 transition">Tees</button>
-                    <button onclick="filterCategory('tank', this)" class="filter-btn px-5 py-2 rounded-full glass text-sm hover:scale-105 transition">Tanks</button>
-                    <button onclick="filterCategory('dress', this)" class="filter-btn px-5 py-2 rounded-full glass text-sm hover:scale-105 transition">Dresses</button>
-                    <button onclick="filterCategory('pants', this)" class="filter-btn px-5 py-2 rounded-full glass text-sm hover:scale-105 transition">Pants</button>
-                    <button onclick="filterCategory('bag', this)" class="filter-btn px-5 py-2 rounded-full glass text-sm hover:scale-105 transition">Totes</button>
-                    <button onclick="filterCategory('others', this)" class="filter-btn px-5 py-2 rounded-full glass text-sm hover:scale-105 transition">Others</button>
+                    <button onclick="filterCategory('bag', this)" class="filter-btn px-5 py-2 rounded-full glass text-sm hover:scale-105 transition">Tote Bags</button>
                 </div>
             </div>
 
@@ -326,11 +327,9 @@
         <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12">
             <div>
                 <h4 class="font-bold mb-4">Shop</h4>
+                <!-- ONLY 3 CATEGORIES IN FOOTER -->
+                <button onclick="scrollToCategory('shirt')" class="footer-link">T-shirts</button>
                 <button onclick="scrollToCategory('hoodie')" class="footer-link">Hoodies</button>
-                <button onclick="scrollToCategory('shirt')" class="footer-link">Tees</button>
-                <button onclick="scrollToCategory('tank')" class="footer-link">Tank Tops</button>
-                <button onclick="scrollToCategory('dress')" class="footer-link">Dresses</button>
-                <button onclick="scrollToCategory('pants')" class="footer-link">Pants</button>
                 <button onclick="scrollToCategory('bag')" class="footer-link">Tote Bags</button>
             </div>
             <div>
@@ -517,14 +516,16 @@ function populateCountries() {
     });
 }
 
+// ENHANCED PARTICLES - MORE VISIBLE AND NUMEROUS
 function createParticles() {
     const container = document.getElementById('particles');
-    for (let i = 0; i < 80; i++) {
+    // Increased to 150 particles for more density
+    for (let i = 0; i < 150; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
         particle.style.left = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 25 + 's';
-        particle.style.animationDuration = (20 + Math.random() * 15) + 's';
+        particle.style.animationDelay = Math.random() * 20 + 's';
+        particle.style.animationDuration = (15 + Math.random() * 10) + 's';
         particle.style.top = Math.random() * 100 + '%';
         container.appendChild(particle);
     }
@@ -557,7 +558,23 @@ async function fetchProducts() {
 
         console.log("PRINTIFY DATA:", result);
 
-        products = result.data || [];
+        // Filter to only 3 categories: T-shirts (including tees), Hoodies, Tote bags
+        let allProducts = result.data || [];
+        
+        // Filter products to only include allowed categories
+        products = allProducts.filter(p => {
+            const title = p.title.toLowerCase();
+            const desc = (p.description || '').toLowerCase();
+            const tags = (p.tags || []).join(' ').toLowerCase();
+            const searchStr = title + ' ' + desc + ' ' + tags;
+            
+            // Check if product matches allowed categories
+            const isTshirt = searchStr.includes('t-shirt') || searchStr.includes('tee') || searchStr.includes('shirt');
+            const isHoodie = searchStr.includes('hoodie') || searchStr.includes('hood');
+            const isBag = searchStr.includes('tote') || searchStr.includes('bag');
+            
+            return isTshirt || isHoodie || isBag;
+        });
         
         if (!products.length) {
             document.getElementById('error-state').classList.remove('hidden');
@@ -575,15 +592,16 @@ async function fetchProducts() {
 }
 
 // ==========================================
-// RENDER PRODUCTS
+// RENDER PRODUCTS (FIXED PRICING - USE PRINTIFY retail_price)
 // ==========================================
 function renderProducts(productsToRender) {
     const grid = document.getElementById('products-grid');
     grid.innerHTML = '';
 
     productsToRender.forEach((p, index) => {
-        const basePrice = p.variants?.[0]?.price || 2000;
-        const adjustedPrice = Math.max(basePrice, Math.ceil(basePrice * 1.3));
+        // FIXED: Use Printify retail_price directly, no extra markup
+        // Printify returns price in cents, convert to dollars
+        const price = p.variants?.[0]?.retail_price || p.variants?.[0]?.price || 2000;
         
         const card = document.createElement('div');
         card.className = 'product-card glass rounded-2xl overflow-hidden cursor-pointer group';
@@ -603,7 +621,7 @@ function renderProducts(productsToRender) {
             <div class="p-4">
                 <span class="provider-badge">${providerName}</span>
                 <h3 class="font-display text-lg font-bold mb-1 line-clamp-2">${p.title}</h3>
-                <p class="text-purple-400 font-bold">$${(adjustedPrice / 100).toFixed(2)}</p>
+                <p class="text-purple-400 font-bold">$${(price / 100).toFixed(2)}</p>
                 ${p.options ? `<p class="text-xs text-gray-500 mt-1">${p.options.length} options available</p>` : ''}
             </div>
         `;
@@ -613,7 +631,7 @@ function renderProducts(productsToRender) {
 }
 
 // ==========================================
-// FILTER CATEGORY
+// FILTER CATEGORY (ONLY 3 CATEGORIES)
 // ==========================================
 function filterCategory(category, btn) {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -629,13 +647,10 @@ function filterCategory(category, btn) {
             const searchStr = title + ' ' + desc + ' ' + tags;
             
             switch(category) {
-                case 'hoodie': return searchStr.includes('hoodie') || searchStr.includes('hood');
+                // T-shirts includes both "t-shirt" and "tee"
                 case 'shirt': return searchStr.includes('t-shirt') || searchStr.includes('tee') || searchStr.includes('shirt');
-                case 'tank': return searchStr.includes('tank');
-                case 'dress': return searchStr.includes('dress');
-                case 'pants': return searchStr.includes('pant') || searchStr.includes('legging') || searchStr.includes('short');
+                case 'hoodie': return searchStr.includes('hoodie') || searchStr.includes('hood');
                 case 'bag': return searchStr.includes('tote') || searchStr.includes('bag');
-                case 'others': return !searchStr.includes('hoodie') && !searchStr.includes('hood') && !searchStr.includes('t-shirt') && !searchStr.includes('tee') && !searchStr.includes('shirt') && !searchStr.includes('tank') && !searchStr.includes('dress') && !searchStr.includes('pant') && !searchStr.includes('legging') && !searchStr.includes('short') && !searchStr.includes('tote') && !searchStr.includes('bag');
                 default: return true;
             }
         });
@@ -644,7 +659,7 @@ function filterCategory(category, btn) {
 }
 
 // ==========================================
-// PRODUCT MODAL (FIXED SIZE & COLOR)
+// PRODUCT MODAL (FIXED SIZE & COLOR + PRICING)
 // ==========================================
 function openProduct(productId) {
     const product = products.find(p => p.id === productId);
@@ -688,9 +703,8 @@ function openProduct(productId) {
         </select>
     ` : '';
 
-    // Get price with profit protection
-    const basePrice = product.variants?.[0]?.price || 2000;
-    const adjustedPrice = Math.max(basePrice, Math.ceil(basePrice * 1.3));
+    // FIXED: Use Printify retail_price directly
+    const price = product.variants?.[0]?.retail_price || product.variants?.[0]?.price || 2000;
 
     const providerName = product.print_provider_name || product.print_provider_id || 'Premium Provider';
 
@@ -701,7 +715,7 @@ function openProduct(productId) {
         <div class="modal-product-info">
             <span class="provider-badge">${providerName}</span>
             <h2 class="font-display text-3xl font-bold">${product.title}</h2>
-            <p class="text-2xl text-purple-400 font-bold">$${(adjustedPrice / 100).toFixed(2)}</p>
+            <p class="text-2xl text-purple-400 font-bold">$${(price / 100).toFixed(2)}</p>
             <div class="text-gray-300 text-sm leading-relaxed max-h-40 overflow-y-auto">${product.description || 'No description available.'}</div>
             
             ${sizeSelect}
@@ -738,7 +752,7 @@ function closeProduct() {
 }
 
 // ==========================================
-// CART SYSTEM (FIXED SPACING)
+// CART SYSTEM (FIXED PRICING)
 // ==========================================
 function addToCartFromModal() {
     if (!currentProduct) return;
@@ -763,15 +777,14 @@ function addToCartFromModal() {
         selectedVariant = currentProduct.variants?.find(v => v.title === targetTitle) || selectedVariant;
     }
 
-    // Apply profit protection
-    const basePrice = selectedVariant?.price || currentProduct.variants?.[0]?.price || 2000;
-    const adjustedPrice = Math.max(basePrice, Math.ceil(basePrice * 1.3));
+    // FIXED: Use Printify retail_price directly, no extra markup
+    const price = selectedVariant?.retail_price || selectedVariant?.price || currentProduct.variants?.[0]?.retail_price || currentProduct.variants?.[0]?.price || 2000;
 
     const cartItem = {
         id: currentProduct.id + '-' + (currentSelections.size || '') + '-' + (currentSelections.color || ''),
         productId: currentProduct.id,
         title: currentProduct.title,
-        price: adjustedPrice,
+        price: price, // Using Printify price directly
         image: currentProduct.images?.[0]?.src || currentProduct.images?.[0] || '',
         selectedSize: currentSelections.size,
         selectedColor: currentSelections.color,
